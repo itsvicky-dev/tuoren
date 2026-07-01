@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Tuoren Medical — Sales App Design</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Geist', -apple-system, system-ui, sans-serif;
+    background: oklch(0.965 0.006 240);
+    color: oklch(0.22 0.02 250);
+    -webkit-font-smoothing: antialiased;
+  }
+  * { box-sizing: border-box; }
+  button { font-family: inherit; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design_canvas.jsx"></script>
+<script type="text/babel" src="components/tokens.jsx"></script>
+<script type="text/babel" src="components/icons.jsx"></script>
+<script type="text/babel" src="components/map.jsx"></script>
+<script type="text/babel" src="components/phone.jsx"></script>
+<script type="text/babel" src="screens/v1.jsx"></script>
+<script type="text/babel" src="screens/v2.jsx"></script>
+
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState } = React;
+
+// Wrap a screen with tab bar
+const withTabs = (screen, tab) => (
+  <div style={{ position: 'relative', height: '100%' }}>
+    {screen}
+    <TabBar active={tab}/>
+  </div>
+);
+
+// V1 clickable state manager
+function V1App({ flow }) {
+  // flow: 'checkin' | 'lead'
+  // We render a single "current" screen based on step
+  const [step, setStep] = useState(0);
+  if (flow === 'checkin') {
+    const steps = [
+      <V1Home onCheckIn={() => setStep(1)} onLead={() => setStep(4)}/>,
+      <V1CheckIn state="out" onBack={() => setStep(0)} onConfirm={() => setStep(2)}/>,
+      <V1CheckIn state="in" onBack={() => setStep(0)} onConfirm={() => setStep(3)}/>,
+      <V1CheckIn state="success" onBack={() => setStep(0)} onDone={() => setStep(5)}/>,
+      <V1LeadDetail onBack={() => setStep(0)} onLogVisit={() => setStep(5)}/>,
+      <V1VisitLog onBack={() => setStep(0)} onSave={() => setStep(0)}/>,
+    ];
+    return withTabs(steps[step], step === 0 ? 'home' : 'leads');
+  }
+  return null;
+}
+
+function V2App({ flow }) {
+  const [step, setStep] = useState(0);
+  // similar
+  return null;
+}
+
+const app = (
+  <DesignCanvas
+    title="Tuoren Medical · Field Sales App"
+    subtitle="2 variations · Clickable prototype · Design once, notes for iOS + Android"
+  >
+    {/* Cover / notes */}
+    <DCSection id="intro" title="Design brief">
+      <DCArtboard id="brief" label="Brief · read me" width={720} height={520}>
+        <BriefCard/>
+      </DCArtboard>
+      <DCArtboard id="system" label="Design system" width={720} height={520}>
+        <SystemCard/>
+      </DCArtboard>
+    </DCSection>
+
+    {/* V1 — Calm Clinical */}
+    <DCSection id="v1" title="Variation 1 — Calm Clinical">
+      <DCArtboard id="v1-login" label="01 · Login" width={430} height={800}>
+        <Phone><V1Login onNext={() => {}}/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v1-home" label="02 · Dashboard" width={430} height={800}>
+        <Phone>{withTabs(<V1Home/>, 'home')}</Phone>
+      </DCArtboard>
+      <DCArtboard id="v1-checkin-out" label="03a · Check-in · outside fence" width={430} height={800}>
+        <Phone><V1CheckIn state="out"/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v1-checkin-in" label="03b · Check-in · inside fence" width={430} height={800}>
+        <Phone><V1CheckIn state="in"/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v1-checkin-ok" label="03c · Check-in · confirmed" width={430} height={800}>
+        <Phone><V1CheckIn state="success"/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v1-leads" label="04 · Leads list" width={430} height={800}>
+        <Phone>{withTabs(<V1Leads/>, 'leads')}</Phone>
+      </DCArtboard>
+      <DCArtboard id="v1-lead" label="05 · Lead detail" width={430} height={800}>
+        <Phone><V1LeadDetail/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v1-log" label="06 · Visit log" width={430} height={800}>
+        <Phone><V1VisitLog/></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    {/* V2 — Field Utility */}
+    <DCSection id="v2" title="Variation 2 — Field Utility">
+      <DCArtboard id="v2-login" label="01 · Login" width={430} height={800}>
+        <Phone dark><V2Login/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v2-home" label="02 · Dashboard" width={430} height={800}>
+        <Phone>{withTabs(<V2Home/>, 'home')}</Phone>
+      </DCArtboard>
+      <DCArtboard id="v2-checkin-out" label="03a · Check-in · outside fence" width={430} height={800}>
+        <Phone><V2CheckIn state="out"/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v2-checkin-in" label="03b · Check-in · swipe to confirm" width={430} height={800}>
+        <Phone><V2CheckIn state="in"/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v2-checkin-ok" label="03c · Check-in · confirmed" width={430} height={800}>
+        <Phone><V2CheckIn state="success"/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v2-leads" label="04 · Leads pipeline" width={430} height={800}>
+        <Phone>{withTabs(<V2Leads/>, 'leads')}</Phone>
+      </DCArtboard>
+      <DCArtboard id="v2-lead" label="05 · Lead detail" width={430} height={800}>
+        <Phone><V2LeadDetail/></Phone>
+      </DCArtboard>
+      <DCArtboard id="v2-log" label="06 · Visit log" width={430} height={800}>
+        <Phone><V2VisitLog/></Phone>
+      </DCArtboard>
+    </DCSection>
+
+  </DesignCanvas>
+);
+
+// ─────────────────────────────────────────────────────────────
+// Brief + system explainer cards
+// ─────────────────────────────────────────────────────────────
+function BriefCard() {
+  return (
+    <div style={{ padding: 40, height: '100%', background: 'white', overflow: 'auto' }}>
+      <div style={{ fontFamily: MONO, fontSize: 11, color: T.ink3, letterSpacing: 0.5, textTransform: 'uppercase' }}>
+        Tuoren Medical · Gurgaon
+      </div>
+      <div style={{ fontFamily: FONT, fontSize: 32, fontWeight: 600, color: T.ink, letterSpacing: -0.6, marginTop: 6, lineHeight: 1.15 }}>
+        Field Sales app for<br/>the medical devices team
+      </div>
+      <div style={{ fontFamily: FONT, fontSize: 15, color: T.ink2, marginTop: 14, lineHeight: 1.55, maxWidth: 560 }}>
+        Two directions for a sales rep's daily companion. Both cover the priority flow —
+        <b> geo-fenced attendance check-in</b> — plus lead pipeline, doctor detail and
+        visit logging.
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 32 }}>
+        <BriefBlock
+          label="Variation 1"
+          title="Calm Clinical"
+          body="Generous whitespace. One big primary action per screen. Full-bleed map with bottom sheet. Feels calm and trustworthy — a healthcare app first, sales tool second."
+        />
+        <BriefBlock
+          label="Variation 2"
+          title="Field Utility"
+          body="Denser layouts. More status pills, quick stats, top-tab navigation. Compact map card + nearby-fence picker + swipe-to-confirm. Built for speed on-the-go."
+        />
+      </div>
+
+      <div style={{
+        marginTop: 28, padding: 16, borderRadius: T.r3,
+        background: T.brandSoft, color: T.brandInk,
+        fontFamily: FONT, fontSize: 13, lineHeight: 1.5,
+      }}>
+        <b>Priority flow — geo-fenced check-in:</b> Each screen in row 3 shows a state
+        (outside fence → inside fence → confirmed). Reps can only check in when GPS
+        places them inside the 200m fence around a listed hospital/office.
+      </div>
+    </div>
+  );
+}
+
+function BriefBlock({ label, title, body }) {
+  return (
+    <div style={{
+      padding: 20, borderRadius: T.r3, background: T.surface,
+      border: `1px solid ${T.line}`,
+    }}>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, color: T.brand, letterSpacing: 0.4, textTransform: 'uppercase', fontWeight: 500 }}>{label}</div>
+      <div style={{ fontFamily: FONT, fontSize: 20, fontWeight: 600, color: T.ink, letterSpacing: -0.3, marginTop: 6 }}>{title}</div>
+      <div style={{ fontFamily: FONT, fontSize: 13.5, color: T.ink2, marginTop: 8, lineHeight: 1.5 }}>{body}</div>
+    </div>
+  );
+}
+
+function SystemCard() {
+  const swatches = [
+    { name: 'Brand', hex: T.brand, note: 'Primary actions' },
+    { name: 'Ink', hex: T.ink, note: 'Body text' },
+    { name: 'Success', hex: T.ok, note: 'Inside fence' },
+    { name: 'Warn', hex: T.warn, note: 'Outside fence' },
+    { name: 'Surface', hex: T.surface, note: 'Cards' },
+    { name: 'Line', hex: T.line, note: 'Borders' },
+  ];
+  return (
+    <div style={{ padding: 40, height: '100%', background: 'white', overflow: 'auto' }}>
+      <div style={{ fontFamily: MONO, fontSize: 11, color: T.ink3, letterSpacing: 0.5, textTransform: 'uppercase' }}>Design tokens</div>
+      <div style={{ fontFamily: FONT, fontSize: 28, fontWeight: 600, color: T.ink, letterSpacing: -0.5, marginTop: 6 }}>
+        Clinical, trustworthy, restrained
+      </div>
+
+      <div style={{ marginTop: 26 }}>
+        <div style={{ fontFamily: FONT, fontSize: 12, fontWeight: 600, color: T.ink3, textTransform: 'uppercase', letterSpacing: 0.4, marginBottom: 12 }}>Palette</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+          {swatches.map(s => (
+            <div key={s.name} style={{ border: `1px solid ${T.line}`, borderRadius: T.r3, overflow: 'hidden' }}>
+              <div style={{ height: 60, background: s.hex }}/>
+              <div style={{ padding: '10px 12px' }}>
+                <div style={{ fontFamily: FONT, fontSize: 13, fontWeight: 600, color: T.ink, letterSpacing: -0.1 }}>{s.name}</div>
+                <div style={{ fontFamily: MONO, fontSize: 10.5, color: T.ink3, marginTop: 1 }}>{s.note}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div>
+          <div style={{ fontFamily: FONT, fontSize: 12, fontWeight: 600, color: T.ink3, textTransform: 'uppercase', letterSpacing: 0.4, marginBottom: 10 }}>Type</div>
+          <div style={{ fontFamily: FONT, fontSize: 32, fontWeight: 600, color: T.ink, letterSpacing: -0.6, lineHeight: 1.1 }}>Geist</div>
+          <div style={{ fontFamily: FONT, fontSize: 13, color: T.ink3, marginTop: 4 }}>Primary · UI &amp; headings</div>
+          <div style={{ fontFamily: MONO, fontSize: 18, color: T.ink2, marginTop: 12, letterSpacing: -0.2 }}>Geist Mono</div>
+          <div style={{ fontFamily: FONT, fontSize: 13, color: T.ink3, marginTop: 4 }}>Metrics · timestamps · IDs</div>
+        </div>
+        <div>
+          <div style={{ fontFamily: FONT, fontSize: 12, fontWeight: 600, color: T.ink3, textTransform: 'uppercase', letterSpacing: 0.4, marginBottom: 10 }}>Platform notes</div>
+          <div style={{ fontFamily: FONT, fontSize: 13, color: T.ink2, lineHeight: 1.55 }}>
+            Designed platform-agnostic. Chrome adapts:<br/>
+            <b>iOS:</b> back chevrons, share sheets, haptic on check-in.<br/>
+            <b>Android:</b> Material bottom nav, ripple, system share.<br/>
+            Tap targets ≥ 44px throughout.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(app);
+</script>
+</body>
+</html>
