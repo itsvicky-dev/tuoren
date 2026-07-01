@@ -36,7 +36,114 @@
 <div id="root"></div>
 
 <script type="text/babel" data-presets="react">
-const { useState } = React;
+const { useState, useEffect } = React;
+
+// ─── Phone Preview Overlay ───────────────────────────────────
+const phoneRegistry = [];
+
+function registerPhone(label, dark, children) {
+  const idx = phoneRegistry.length;
+  phoneRegistry.push({ label, dark, children });
+  return idx;
+}
+
+function PhonePreviewOverlay({ idx, onClose }) {
+  const total = phoneRegistry.length;
+  const [cur, setCur] = useState(idx);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft') setCur(i => (i - 1 + total) % total);
+      if (e.key === 'ArrowRight') setCur(i => (i + 1) % total);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [total]);
+
+  const entry = phoneRegistry[cur];
+  if (!entry) return null;
+
+  const NavBtn = ({ dir }) => (
+    <button
+      onClick={(e) => { e.stopPropagation(); setCur(i => dir === 'prev' ? (i - 1 + total) % total : (i + 1) % total); }}
+      style={{
+        position: 'absolute', top: '50%', [dir === 'prev' ? 'left' : 'right']: 24,
+        transform: 'translateY(-50%)', border: 'none',
+        background: 'rgba(255,255,255,0.1)', color: '#fff',
+        width: 48, height: 48, borderRadius: 24, cursor: 'pointer',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'background 0.15s', fontSize: 0
+      }}
+      onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.22)'}
+      onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+        <path d={dir === 'prev' ? 'M13 4L7 10l6 6' : 'M7 4l6 6-6 6'} />
+      </svg>
+    </button>
+  );
+
+  return ReactDOM.createPortal(
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(18,14,10,0.72)', backdropFilter: 'blur(18px)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        gap: 20
+      }}
+    >
+      {/* Phone scaled to fit viewport */}
+      <div onClick={e => e.stopPropagation()} style={{ transform: `scale(${Math.min(1, (window.innerHeight - 160) / (PHONE_H + 20))})`, transformOrigin: 'center center' }}>
+        <Phone dark={entry.dark}>{entry.children}</Phone>
+      </div>
+
+      {/* Label + counter */}
+      <div onClick={e => e.stopPropagation()} style={{ color: 'rgba(255,255,255,0.85)', fontFamily: FONT, fontSize: 14, fontWeight: 500, textAlign: 'center', marginTop: -8 }}>
+        {entry.label}
+        <span style={{ opacity: 0.45, marginLeft: 10, fontVariantNumeric: 'tabular-nums' }}>{cur + 1} / {total}</span>
+      </div>
+
+      {/* Dots */}
+      <div onClick={e => e.stopPropagation()} style={{ display: 'flex', gap: 7 }}>
+        {phoneRegistry.map((_, i) => (
+          <button key={i} onClick={() => setCur(i)}
+            style={{ border: 'none', padding: 0, cursor: 'pointer', width: 6, height: 6, borderRadius: 3,
+              background: i === cur ? '#fff' : 'rgba(255,255,255,0.28)' }} />
+        ))}
+      </div>
+
+      <NavBtn dir="prev" />
+      <NavBtn dir="next" />
+
+      {/* Close */}
+      <button onClick={onClose}
+        style={{ position: 'absolute', top: 16, right: 20, border: 'none', background: 'transparent',
+          color: 'rgba(255,255,255,0.6)', fontSize: 28, cursor: 'pointer', lineHeight: 1, padding: '4px 8px' }}
+        onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+        onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
+      >×</button>
+    </div>,
+    document.body
+  );
+}
+
+// Wrapper that registers a phone and opens preview on click
+function ClickablePhone({ label, dark, children }) {
+  const [open, setOpen] = useState(false);
+  // Register once — use a ref so it only runs once per mount
+  const idxRef = React.useRef(null);
+  if (idxRef.current === null) {
+    idxRef.current = registerPhone(label, dark, children);
+  }
+  return (
+    <>
+      <Phone dark={dark} onClick={() => setOpen(true)} active={open}>{children}</Phone>
+      {open && <PhonePreviewOverlay idx={idxRef.current} onClose={() => setOpen(false)} />}
+    </>
+  );
+}
 
 // Wrap a screen with tab bar
 const withTabs = (screen, tab) => (
@@ -88,57 +195,57 @@ const app = (
 
     {/* V1 — Calm Clinical */}
     <DCSection id="v1" title="Variation 1 — Calm Clinical">
-      <DCArtboard id="v1-login" label="01 · Login" width={430} height={800}>
-        <Phone><V1Login onNext={() => {}}/></Phone>
+      <DCArtboard id="v1-login" label="01 · Login" width={410} height={783}>
+        <ClickablePhone label="V1 · 01 · Login"><V1Login onNext={() => {}}/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v1-home" label="02 · Dashboard" width={430} height={800}>
-        <Phone>{withTabs(<V1Home/>, 'home')}</Phone>
+      <DCArtboard id="v1-home" label="02 · Dashboard" width={410} height={783}>
+        <ClickablePhone label="V1 · 02 · Dashboard">{withTabs(<V1Home/>, 'home')}</ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v1-checkin-out" label="03a · Check-in · outside fence" width={430} height={800}>
-        <Phone><V1CheckIn state="out"/></Phone>
+      <DCArtboard id="v1-checkin-out" label="03a · Check-in · outside fence" width={410} height={783}>
+        <ClickablePhone label="V1 · 03a · Check-in outside fence"><V1CheckIn state="out"/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v1-checkin-in" label="03b · Check-in · inside fence" width={430} height={800}>
-        <Phone><V1CheckIn state="in"/></Phone>
+      <DCArtboard id="v1-checkin-in" label="03b · Check-in · inside fence" width={410} height={783}>
+        <ClickablePhone label="V1 · 03b · Check-in inside fence"><V1CheckIn state="in"/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v1-checkin-ok" label="03c · Check-in · confirmed" width={430} height={800}>
-        <Phone><V1CheckIn state="success"/></Phone>
+      <DCArtboard id="v1-checkin-ok" label="03c · Check-in · confirmed" width={410} height={783}>
+        <ClickablePhone label="V1 · 03c · Check-in confirmed"><V1CheckIn state="success"/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v1-leads" label="04 · Leads list" width={430} height={800}>
-        <Phone>{withTabs(<V1Leads/>, 'leads')}</Phone>
+      <DCArtboard id="v1-leads" label="04 · Leads list" width={410} height={783}>
+        <ClickablePhone label="V1 · 04 · Leads list">{withTabs(<V1Leads/>, 'leads')}</ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v1-lead" label="05 · Lead detail" width={430} height={800}>
-        <Phone><V1LeadDetail/></Phone>
+      <DCArtboard id="v1-lead" label="05 · Lead detail" width={410} height={783}>
+        <ClickablePhone label="V1 · 05 · Lead detail"><V1LeadDetail/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v1-log" label="06 · Visit log" width={430} height={800}>
-        <Phone><V1VisitLog/></Phone>
+      <DCArtboard id="v1-log" label="06 · Visit log" width={410} height={783}>
+        <ClickablePhone label="V1 · 06 · Visit log"><V1VisitLog/></ClickablePhone>
       </DCArtboard>
     </DCSection>
 
     {/* V2 — Field Utility */}
     <DCSection id="v2" title="Variation 2 — Field Utility">
-      <DCArtboard id="v2-login" label="01 · Login" width={430} height={800}>
-        <Phone dark><V2Login/></Phone>
+      <DCArtboard id="v2-login" label="01 · Login" width={410} height={783}>
+        <ClickablePhone label="V2 · 01 · Login" dark><V2Login/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v2-home" label="02 · Dashboard" width={430} height={800}>
-        <Phone>{withTabs(<V2Home/>, 'home')}</Phone>
+      <DCArtboard id="v2-home" label="02 · Dashboard" width={410} height={783}>
+        <ClickablePhone label="V2 · 02 · Dashboard">{withTabs(<V2Home/>, 'home')}</ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v2-checkin-out" label="03a · Check-in · outside fence" width={430} height={800}>
-        <Phone><V2CheckIn state="out"/></Phone>
+      <DCArtboard id="v2-checkin-out" label="03a · Check-in · outside fence" width={410} height={783}>
+        <ClickablePhone label="V2 · 03a · Check-in outside fence"><V2CheckIn state="out"/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v2-checkin-in" label="03b · Check-in · swipe to confirm" width={430} height={800}>
-        <Phone><V2CheckIn state="in"/></Phone>
+      <DCArtboard id="v2-checkin-in" label="03b · Check-in · swipe to confirm" width={410} height={783}>
+        <ClickablePhone label="V2 · 03b · Check-in swipe to confirm"><V2CheckIn state="in"/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v2-checkin-ok" label="03c · Check-in · confirmed" width={430} height={800}>
-        <Phone><V2CheckIn state="success"/></Phone>
+      <DCArtboard id="v2-checkin-ok" label="03c · Check-in · confirmed" width={410} height={783}>
+        <ClickablePhone label="V2 · 03c · Check-in confirmed"><V2CheckIn state="success"/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v2-leads" label="04 · Leads pipeline" width={430} height={800}>
-        <Phone>{withTabs(<V2Leads/>, 'leads')}</Phone>
+      <DCArtboard id="v2-leads" label="04 · Leads pipeline" width={410} height={783}>
+        <ClickablePhone label="V2 · 04 · Leads pipeline">{withTabs(<V2Leads/>, 'leads')}</ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v2-lead" label="05 · Lead detail" width={430} height={800}>
-        <Phone><V2LeadDetail/></Phone>
+      <DCArtboard id="v2-lead" label="05 · Lead detail" width={410} height={783}>
+        <ClickablePhone label="V2 · 05 · Lead detail"><V2LeadDetail/></ClickablePhone>
       </DCArtboard>
-      <DCArtboard id="v2-log" label="06 · Visit log" width={430} height={800}>
-        <Phone><V2VisitLog/></Phone>
+      <DCArtboard id="v2-log" label="06 · Visit log" width={410} height={783}>
+        <ClickablePhone label="V2 · 06 · Visit log"><V2VisitLog/></ClickablePhone>
       </DCArtboard>
     </DCSection>
 

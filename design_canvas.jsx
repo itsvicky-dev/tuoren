@@ -832,7 +832,7 @@ function DCArtboardFrame({ sectionId, artboard, label, order, onRename, onReorde
         </div>
       </div>
       <div ref={cardRef} className="dc-card"
-      style={{ borderRadius: 2, boxShadow: '0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)', overflow: 'hidden', width, height, background: '#fff', ...style }}>
+      style={{ borderRadius: 45, boxShadow: '0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06)', overflow: 'hidden', width, height, background: '#fff', ...style }}>
         <DCArtboardBoundary key={`${sectionId}/${id}`}>
           {children || <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#bbb', fontSize: 13, fontFamily: DC.font }}>{id}</div>}
         </DCArtboardBoundary>
