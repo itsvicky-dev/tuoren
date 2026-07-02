@@ -995,4 +995,354 @@ function SampleRowDense({ sku, name, qty, last }) {
   );
 }
 
-Object.assign(window, { V2Login, V2Home, V2CheckIn, V2Leads, V2LeadDetail, V2VisitLog });
+// ─────────────────────────────────────────────────────────────
+// V2 WEB DASHBOARD — 1280px wide desktop layout
+// ─────────────────────────────────────────────────────────────
+function V2Web() {
+  const leads = [
+    { name: 'Dr. Priya Sharma', spec: 'Cardiology · Fortis', stage: 'MEETING', color: T.brand, score: 'A', value: '₹85k', last: '6d' },
+    { name: 'Dr. Anand Verma', spec: 'Interventional · Medanta', stage: 'TRIAL', color: T.warn, score: 'A', value: '₹1.2L', last: '2d' },
+    { name: 'Dr. Kavita Iyer', spec: 'Vascular · Artemis', stage: 'MEETING', color: T.brand, score: 'B', value: '₹40k', last: '9d' },
+    { name: 'Dr. Sameer Roy', spec: 'General Surg · Max', stage: 'NEW', color: T.ink3, score: 'B', value: '—', last: '14d' },
+    { name: 'Dr. Meera Nair', spec: 'Anesthesia · Paras', stage: 'WON', color: T.ok, score: 'A', value: '₹95k', last: '1d' },
+    { name: 'Dr. Vikram Bose', spec: 'Neuro · Columbia', stage: 'TRIAL', color: T.warn, score: 'B', value: '₹60k', last: '5d' },
+    { name: 'Dr. Ravi Menon', spec: 'Ortho · Manipal', stage: 'CONTACT', color: T.ink2, score: 'C', value: '—', last: '12d' },
+  ];
+
+  const pipeline = [
+    { stage: 'New', count: 4, value: '—', color: T.ink3 },
+    { stage: 'Contact', count: 5, value: '₹0', color: T.ink2 },
+    { stage: 'Meeting', count: 8, value: '₹1.25L', color: T.brand },
+    { stage: 'Trial', count: 5, value: '₹1.8L', color: T.warn },
+    { stage: 'Won', count: 2, value: '₹95k', color: T.ok },
+  ];
+
+  return (
+    <div style={{ height: '100%', background: T.paper, display: 'flex', flexDirection: 'column', fontFamily: FONT, overflow: 'hidden' }}>
+
+      {/* Top nav */}
+      <div style={{
+        height: 52, display: 'flex', alignItems: 'center', gap: 0,
+        borderBottom: `1px solid ${T.line}`, background: 'white', flexShrink: 0,
+        padding: '0 24px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginRight: 32 }}>
+          <div style={{
+            width: 28, height: 28, borderRadius: 7, background: T.brand,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <Icon name="logo" size={16} color="white"/>
+          </div>
+          <div style={{ fontFamily: FONT, fontSize: 14, fontWeight: 600, color: T.ink, letterSpacing: -0.2 }}>Tuoren <span style={{ color: T.ink3, fontWeight: 400 }}>/ Field</span></div>
+        </div>
+        {['Dashboard', 'Leads', 'Visits', 'Reports', 'Map'].map((n, i) => (
+          <div key={n} style={{
+            padding: '0 14px', height: 52, display: 'flex', alignItems: 'center',
+            fontFamily: FONT, fontSize: 13.5, fontWeight: i === 0 ? 600 : 500,
+            color: i === 0 ? T.ink : T.ink3,
+            borderBottom: i === 0 ? `2px solid ${T.brand}` : '2px solid transparent',
+            cursor: 'pointer',
+          }}>{n}</div>
+        ))}
+        <div style={{ flex: 1 }}/>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          padding: '6px 12px', borderRadius: 8,
+          background: T.surface, border: `1px solid ${T.line}`,
+          fontFamily: FONT, fontSize: 13, color: T.ink3, marginRight: 12, width: 200,
+        }}>
+          <Icon name="search" size={14} color={T.ink3}/>
+          Search leads, doctors…
+        </div>
+        <div style={{
+          width: 8, height: 8, borderRadius: 999, background: T.warn,
+          marginRight: 4, marginLeft: 4,
+        }}/>
+        <div style={{ fontFamily: MONO, fontSize: 11, color: T.ink3, letterSpacing: 0.2, marginRight: 16 }}>NOT CHECKED IN</div>
+        <div style={{
+          width: 32, height: 32, borderRadius: 8, background: T.brandSoft,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: FONT, fontSize: 12, fontWeight: 600, color: T.brandInk,
+        }}>RK</div>
+      </div>
+
+      {/* Body */}
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+
+        {/* Left sidebar */}
+        <div style={{
+          width: 220, borderRight: `1px solid ${T.line}`, background: 'white',
+          padding: '20px 0', flexShrink: 0, overflow: 'auto',
+        }}>
+          <div style={{ padding: '0 16px 12px', fontFamily: MONO, fontSize: 10, color: T.ink3, letterSpacing: 0.4, textTransform: 'uppercase' }}>My territory</div>
+          {[
+            { icon: 'home', label: 'Today', badge: null, active: true },
+            { icon: 'users', label: 'Leads', badge: '24' },
+            { icon: 'pin', label: 'Check-in', badge: null },
+            { icon: 'calendar', label: 'Schedule', badge: '3' },
+            { icon: 'chart', label: 'Reports', badge: null },
+          ].map(({ icon, label, badge, active }) => (
+            <div key={label} style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '9px 16px', cursor: 'pointer',
+              background: active ? T.brandSoft : 'transparent',
+              borderLeft: active ? `2px solid ${T.brand}` : '2px solid transparent',
+            }}>
+              <Icon name={icon} size={16} color={active ? T.brand : T.ink3}/>
+              <div style={{ flex: 1, fontFamily: FONT, fontSize: 13.5, fontWeight: active ? 600 : 500, color: active ? T.ink : T.ink2 }}>{label}</div>
+              {badge && (
+                <div style={{
+                  padding: '1px 6px', borderRadius: 4,
+                  background: active ? T.brand : T.surface2,
+                  color: active ? 'white' : T.ink3,
+                  fontFamily: MONO, fontSize: 10, fontWeight: 600,
+                }}>{badge}</div>
+              )}
+            </div>
+          ))}
+
+          <div style={{ margin: '16px 16px', height: 1, background: T.line }}/>
+          <div style={{ padding: '0 16px 12px', fontFamily: MONO, fontSize: 10, color: T.ink3, letterSpacing: 0.4, textTransform: 'uppercase' }}>Today's route</div>
+          {[
+            { time: '10:30', name: 'Dr. Priya Sharma', done: false },
+            { time: '12:15', name: 'Dr. Anand Verma', done: false },
+            { time: '14:00', name: 'Dr. Kavita Iyer', done: false },
+            { time: '16:30', name: 'Dr. Sameer Roy', done: false },
+          ].map(({ time, name, done }) => (
+            <div key={name} style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '7px 16px', cursor: 'pointer',
+            }}>
+              <div style={{ width: 5, height: 5, borderRadius: 999, background: done ? T.ok : T.line2, flexShrink: 0 }}/>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: FONT, fontSize: 12.5, color: T.ink, fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{name}</div>
+                <div style={{ fontFamily: MONO, fontSize: 10, color: T.ink3, marginTop: 1 }}>{time}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Main content */}
+        <div style={{ flex: 1, overflow: 'auto', padding: '24px 28px' }}>
+
+          {/* Page header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+            <div>
+              <div style={{ fontFamily: FONT, fontSize: 22, fontWeight: 600, color: T.ink, letterSpacing: -0.5 }}>Good morning, Rohan</div>
+              <div style={{ fontFamily: FONT, fontSize: 13, color: T.ink3, marginTop: 2 }}>Tuesday, July 1 · Gurgaon North territory</div>
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button style={{
+                padding: '9px 16px', borderRadius: 8,
+                background: T.surface, border: `1px solid ${T.line}`,
+                fontFamily: FONT, fontSize: 13, fontWeight: 500, color: T.ink, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <Icon name="calendar" size={14} color={T.ink}/> Schedule
+              </button>
+              <button style={{
+                padding: '9px 16px', borderRadius: 8,
+                background: T.brand, border: 'none',
+                fontFamily: FONT, fontSize: 13, fontWeight: 600, color: 'white', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <Icon name="pin" size={14} color="white"/> Check in
+              </button>
+            </div>
+          </div>
+
+          {/* KPI row */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12, marginBottom: 20 }}>
+            {[
+              { label: 'Visits today', value: '0 / 6', sub: '4 remaining', tone: 'ink' },
+              { label: 'Active leads', value: '24', sub: '+3 this week', tone: 'ok' },
+              { label: 'Pipeline', value: '₹4.2L', sub: 'MTD target ₹6L', tone: 'ink' },
+              { label: 'Won MTD', value: '₹95k', sub: '16% of target', tone: 'ok' },
+              { label: 'Attendance', value: '86%', sub: '19 / 22 days', tone: 'ok' },
+            ].map(({ label, value, sub, tone }) => (
+              <div key={label} style={{
+                background: 'white', border: `1px solid ${T.line}`, borderRadius: 10,
+                padding: '14px 16px',
+              }}>
+                <div style={{ fontFamily: MONO, fontSize: 10, color: T.ink3, letterSpacing: 0.3, textTransform: 'uppercase', marginBottom: 6 }}>{label}</div>
+                <div style={{ fontFamily: FONT, fontSize: 22, fontWeight: 600, color: tone === 'ok' ? T.ok : T.ink, letterSpacing: -0.5 }}>{value}</div>
+                <div style={{ fontFamily: FONT, fontSize: 11.5, color: T.ink3, marginTop: 3 }}>{sub}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pipeline funnel + map row */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+
+            {/* Pipeline */}
+            <div style={{ background: 'white', border: `1px solid ${T.line}`, borderRadius: 10, padding: '16px 18px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+                <div style={{ fontFamily: FONT, fontSize: 14, fontWeight: 600, color: T.ink, letterSpacing: -0.2 }}>Pipeline stages</div>
+                <div style={{ fontFamily: FONT, fontSize: 12, color: T.brand, fontWeight: 500 }}>View all →</div>
+              </div>
+              {pipeline.map((p, i) => (
+                <div key={p.stage} style={{ marginBottom: i < pipeline.length - 1 ? 10 : 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ width: 8, height: 8, borderRadius: 2, background: p.color }}/>
+                      <div style={{ fontFamily: FONT, fontSize: 13, fontWeight: 500, color: T.ink }}>{p.stage}</div>
+                      <div style={{ fontFamily: MONO, fontSize: 10.5, color: T.ink3 }}>{p.count}</div>
+                    </div>
+                    <div style={{ fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: T.ink2 }}>{p.value}</div>
+                  </div>
+                  <div style={{ height: 5, background: T.surface2, borderRadius: 3, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${(p.count / 8) * 100}%`, background: p.color, borderRadius: 3 }}/>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Map card */}
+            <div style={{ background: 'white', border: `1px solid ${T.line}`, borderRadius: 10, overflow: 'hidden', position: 'relative' }}>
+              <StylizedMap w={580} h={220} mode="inFence" dense/>
+              <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', gap: 6 }}>
+                <MapChip>Fortis Memorial · 48m · IN FENCE</MapChip>
+              </div>
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0,
+                background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)',
+                padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10,
+                borderTop: `1px solid ${T.line}`,
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: FONT, fontSize: 13, fontWeight: 600, color: T.ink }}>Next stop: Dr. Priya Sharma</div>
+                  <div style={{ fontFamily: MONO, fontSize: 10.5, color: T.ink3, marginTop: 1 }}>FORTIS MEMORIAL · 0.4 KM · 10:30 AM</div>
+                </div>
+                <button style={{
+                  padding: '7px 14px', borderRadius: 7, border: 'none', cursor: 'pointer',
+                  background: T.brand, color: 'white',
+                  fontFamily: FONT, fontSize: 12.5, fontWeight: 600,
+                }}>Check in</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Leads table */}
+          <div style={{ background: 'white', border: `1px solid ${T.line}`, borderRadius: 10, overflow: 'hidden' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '14px 18px', borderBottom: `1px solid ${T.line}`,
+            }}>
+              <div style={{ fontFamily: FONT, fontSize: 14, fontWeight: 600, color: T.ink, flex: 1 }}>Leads · 24</div>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '6px 10px', borderRadius: 7,
+                background: T.surface, border: `1px solid ${T.line}`,
+                fontFamily: FONT, fontSize: 12.5, color: T.ink3, width: 180,
+              }}>
+                <Icon name="search" size={13} color={T.ink3}/>
+                Filter leads…
+              </div>
+              <div style={{
+                padding: '7px 12px', borderRadius: 7,
+                background: T.brand, color: 'white',
+                fontFamily: FONT, fontSize: 12.5, fontWeight: 600,
+                display: 'flex', alignItems: 'center', gap: 5, cursor: 'pointer',
+              }}>
+                <Icon name="plus" size={13} color="white" strokeWidth={2.4}/> Add lead
+              </div>
+            </div>
+            {/* Column headers */}
+            <div style={{
+              display: 'grid', gridTemplateColumns: '2fr 1.5fr 100px 80px 80px 80px',
+              padding: '8px 18px',
+              fontFamily: MONO, fontSize: 10, color: T.ink3, letterSpacing: 0.3, textTransform: 'uppercase',
+              borderBottom: `1px solid ${T.line}`, background: T.surface,
+            }}>
+              <div>Doctor / Hospital</div>
+              <div>Specialty</div>
+              <div>Stage</div>
+              <div style={{ textAlign: 'right' }}>Value</div>
+              <div style={{ textAlign: 'right' }}>Score</div>
+              <div style={{ textAlign: 'right' }}>Last contact</div>
+            </div>
+            {leads.map((l, i) => (
+              <div key={i} style={{
+                display: 'grid', gridTemplateColumns: '2fr 1.5fr 100px 80px 80px 80px',
+                padding: '11px 18px', alignItems: 'center',
+                borderBottom: i < leads.length - 1 ? `1px solid ${T.line}` : 'none',
+                background: i === 0 ? T.brandSoft : 'white',
+                cursor: 'pointer',
+              }}>
+                <div style={{ fontFamily: FONT, fontSize: 13.5, fontWeight: 600, color: T.ink, letterSpacing: -0.1 }}>{l.name}</div>
+                <div style={{ fontFamily: FONT, fontSize: 12.5, color: T.ink3 }}>{l.spec}</div>
+                <div>
+                  <div style={{
+                    display: 'inline-block',
+                    padding: '2px 8px', borderRadius: 4,
+                    background: `color-mix(in oklch, ${l.color} 12%, white)`,
+                    color: l.color, fontFamily: MONO, fontSize: 10, fontWeight: 600, letterSpacing: 0.3,
+                  }}>{l.stage}</div>
+                </div>
+                <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 12.5, fontWeight: 500, color: l.value === '—' ? T.ink3 : T.ink }}>{l.value}</div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{
+                    display: 'inline-block', width: 22, height: 22, borderRadius: 5,
+                    background: T.surface2, textAlign: 'center', lineHeight: '22px',
+                    fontFamily: MONO, fontSize: 11, fontWeight: 600, color: T.ink2,
+                  }}>{l.score}</div>
+                </div>
+                <div style={{ textAlign: 'right', fontFamily: MONO, fontSize: 11.5, color: T.ink3 }}>{l.last}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right panel */}
+        <div style={{
+          width: 260, borderLeft: `1px solid ${T.line}`, background: 'white',
+          padding: '20px 16px', flexShrink: 0, overflow: 'auto',
+        }}>
+          <div style={{ fontFamily: MONO, fontSize: 10, color: T.ink3, letterSpacing: 0.4, textTransform: 'uppercase', marginBottom: 14 }}>Overdue follow-ups</div>
+          {[
+            { name: 'Dr. Ravi Menon', days: '12d', spec: 'Ortho · Manipal' },
+            { name: 'Dr. Sameer Roy', days: '14d', spec: 'Gen. Surg · Max' },
+            { name: 'Dr. Vikram Bose', days: '5d', spec: 'Neuro · Columbia' },
+          ].map(({ name, days, spec }) => (
+            <div key={name} style={{
+              padding: '10px 12px', borderRadius: 8, marginBottom: 8,
+              background: 'color-mix(in oklch, oklch(0.68 0.16 45) 7%, white)',
+              border: `1px solid color-mix(in oklch, ${T.warn} 20%, white)`,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ fontFamily: FONT, fontSize: 13, fontWeight: 600, color: T.ink, letterSpacing: -0.1 }}>{name}</div>
+                <div style={{ fontFamily: MONO, fontSize: 10.5, color: T.warn, fontWeight: 600 }}>{days}</div>
+              </div>
+              <div style={{ fontFamily: FONT, fontSize: 11.5, color: T.ink3, marginTop: 2 }}>{spec}</div>
+            </div>
+          ))}
+
+          <div style={{ height: 1, background: T.line, margin: '16px 0' }}/>
+          <div style={{ fontFamily: MONO, fontSize: 10, color: T.ink3, letterSpacing: 0.4, textTransform: 'uppercase', marginBottom: 14 }}>Recent activity</div>
+          {[
+            { type: 'VISIT', name: 'Dr. Priya Sharma', note: 'Product demo · Positive', time: '2h ago' },
+            { type: 'CALL', name: 'Dr. Anand Verma', note: 'Trial follow-up', time: 'Yesterday' },
+            { type: 'MEET', name: 'Dr. Kavita Iyer', note: 'First meeting', time: '2d ago' },
+          ].map(({ type, name, note, time }) => (
+            <div key={name} style={{
+              display: 'flex', gap: 10, marginBottom: 12,
+            }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 7, background: T.brandSoft, flexShrink: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: MONO, fontSize: 9, fontWeight: 600, color: T.brandInk, letterSpacing: 0.3,
+              }}>{type}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontFamily: FONT, fontSize: 12.5, fontWeight: 600, color: T.ink, letterSpacing: -0.1 }}>{name}</div>
+                <div style={{ fontFamily: FONT, fontSize: 11.5, color: T.ink3, marginTop: 1 }}>{note}</div>
+                <div style={{ fontFamily: MONO, fontSize: 10, color: T.ink3, marginTop: 2 }}>{time}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { V2Login, V2Home, V2CheckIn, V2Leads, V2LeadDetail, V2VisitLog, V2Web });
