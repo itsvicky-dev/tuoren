@@ -206,6 +206,9 @@
         .app.sidebar-collapsed .nav-caret { display: none; }
         .app.sidebar-collapsed .sidebar-logo { justify-content: center; padding: 14px 8px; }
         .app.sidebar-collapsed .sidebar-logo img { height: 24px; }
+        .sidebar-logo .logo-collapsed { display: none; }
+        .app.sidebar-collapsed .sidebar-logo .logo-expanded { display: none; }
+        .app.sidebar-collapsed .sidebar-logo .logo-collapsed { display: block; }
         .app.sidebar-collapsed .nav-children { display: none !important; }
         .app.sidebar-collapsed .nav { overflow: visible; }
         .app.sidebar-collapsed .nav-item {
@@ -1618,29 +1621,29 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 24px;
-            height: 52px;
+            height: 48px;
             flex-shrink: 0;
         }
         .ld-back {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             color: var(--brand);
-            font-size: 12px;
+            font-size: 12.5px;
             font-weight: 600;
             cursor: pointer;
             background: none;
             border: none;
         }
-        .ld-back svg { width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+        .ld-back svg { width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
         .ld-topbar-actions { display:flex;align-items:center;gap:8px; }
         .ld-btn-edit {
             background: var(--surface);
             border: 1px solid var(--border-strong);
             color: var(--text-2);
-            padding: 7px 16px;
+            padding: 6px 14px;
             border-radius: var(--r-md);
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
             font-family: var(--font);
@@ -1649,9 +1652,9 @@
             background: #16a34a;
             color: #fff;
             border: none;
-            padding: 7px 16px;
+            padding: 6px 14px;
             border-radius: var(--r-md);
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 600;
             cursor: pointer;
             font-family: var(--font);
@@ -1660,9 +1663,9 @@
             background: var(--surface);
             border: 1px solid var(--border-strong);
             color: var(--text-2);
-            padding: 7px 12px;
+            padding: 6px 10px;
             border-radius: var(--r-md);
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 500;
             cursor: pointer;
             font-family: var(--font);
@@ -1670,136 +1673,336 @@
             align-items: center;
             gap: 4px;
         }
-        .ld-btn-more svg { width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2; }
+        .ld-btn-more svg { width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2; }
 
         .ld-hero {
             background: var(--surface);
             border-bottom: 1px solid var(--border);
-            padding: 20px 24px 0;
+            padding: 14px 24px;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 0;
         }
-        .ld-hero-top {
+        .ld-hero-left {
             display: flex;
             align-items: flex-start;
-            gap: 18px;
-            padding-bottom: 16px;
+            gap: 14px;
+            padding-right: 24px;
+            border-right: 1px solid var(--border);
+            flex-shrink: 0;
         }
         .ld-avatar {
-            width: 56px;
-            height: 56px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             flex-shrink: 0;
         }
         .ld-identity { flex:1; }
-        .ld-name-row { display:flex;align-items:center;gap:10px;margin-bottom:6px; }
-        .ld-name { font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.4px; }
+        .ld-name-row { display:flex;align-items:center;gap:8px;margin-bottom:4px; }
+        .ld-name { font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.3px; }
         .ld-status-pill {
-            font-size:11px;font-weight:600;padding:3px 10px;
+            font-size:10.5px;font-weight:600;padding:2px 9px;
             border-radius:var(--r-pill);
         }
-        .ld-meta { display:flex;flex-direction:column;gap:4px; }
-        .ld-meta-row { display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-3); }
-        .ld-meta-row svg { width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0; }
+        .ld-meta { display:flex;flex-direction:column;gap:3px; }
+        .ld-meta-row { display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text-3); }
+        .ld-meta-row svg { width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0; }
 
         .ld-stats {
             display: flex;
-            gap: 0;
-            border-top: 1px solid var(--border);
-            margin: 0 -24px;
-            padding: 0 24px;
+            flex: 1;
+            padding-left: 0;
         }
         .ld-stat {
             flex: 1;
-            padding: 14px 0 14px;
+            padding: 0 24px;
             border-right: 1px solid var(--border);
-            padding-right: 24px;
-            margin-right: 24px;
         }
-        .ld-stat:last-child { border-right:none;margin-right:0;padding-right:0; }
-        .ld-stat-label { font-size:11px;color:var(--text-3);font-weight:500;margin-bottom:4px; }
-        .ld-stat-value { font-size:13.5px;font-weight:600;color:var(--text); }
-        .ld-stat-sub { font-size:11.5px;color:var(--text-3);margin-top:2px; }
+        .ld-stat:last-child { border-right:none; }
+        .ld-stat-label { font-size:11px;color:var(--text-3);font-weight:500;margin-bottom:3px; }
+        .ld-stat-value { font-size:13px;font-weight:600;color:var(--text); }
+        .ld-stat-sub { font-size:11px;color:var(--text-3);margin-top:1px; }
         .ld-score-badge {
             display:inline-block;padding:2px 8px;border-radius:var(--r-pill);
-            font-size:11px;font-weight:700;margin-top:3px;
+            font-size:10.5px;font-weight:700;margin-top:3px;
         }
 
         .ld-actions-bar {
             background: var(--surface);
-            border-bottom: 1px solid var(--border);
+            /* border-bottom: 1px solid var(--border); */
             display: flex;
             align-items: center;
             gap: 20px;
-            padding: 10px 24px;
+            padding: 0 24px 0px 0px;
+            height: 42px;
             flex-shrink: 0;
         }
         .ld-action-btn {
-            display:flex;align-items:center;gap:6px;
+            display:flex;align-items:center;gap:5px;
             background:none;border:none;cursor:pointer;
-            font-size:13px;color:var(--text-2);font-family:var(--font);font-weight:500;
-            padding:4px 0;
+            font-size:12.5px;color:var(--text-2);font-family:var(--font);font-weight:500;
+            padding:5px 0px;
+            border-radius:var(--r-md);
+            transition: background 0.1s;
         }
-        .ld-action-btn svg { width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round; }
+        /* .ld-action-btn:hover { background:#f3f4f6; } */
+        .ld-action-btn svg { width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round; }
 
-        .ld-body { padding: 20px 24px;flex:1; }
+        .ld-body { display:flex; flex:1; overflow:hidden;padding:10px 20px;background:white; }
 
-        /* ── Pipeline stepper ── */
-        .ld-pipeline {
+        /* ── Stage layout ── */
+        .ld-stage-sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            overflow-y: auto;
+            padding: 14px 0;
+        }
+        .ld-stage-sidebar-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 0 14px 10px;
+        }
+        .ld-stage-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.1s;
+        }
+        .ld-stage-item:hover { background: #f9fafb; }
+        .ld-stage-item.active { background: var(--brand-soft); }
+        .ld-stage-item.active .ld-stage-name { color: var(--brand-text); font-weight: 700; }
+        .ld-stage-icon {
+            width: 26px; height: 26px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 11px; font-weight: 700;
+            border: 2px solid #e5e7eb; background: #fff; color: var(--text-3);
+        }
+        .ld-stage-icon.done { background: #16a34a; border-color: #16a34a; color: #fff; }
+        .ld-stage-icon.done svg { width:12px;height:12px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round; }
+        .ld-stage-icon.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+        .ld-stage-icon.locked { background: #f3f4f6; border-color: #e5e7eb; }
+        .ld-stage-icon.locked svg { width:11px;height:11px;stroke:var(--text-4);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+        .ld-stage-info { flex:1; min-width:0; }
+        .ld-stage-name { font-size: 12px; font-weight: 500; color: var(--text); }
+        .ld-stage-date { font-size: 10.5px; color: var(--text-4); margin-top: 1px; }
+        .ld-stage-date.current-tag { color: var(--brand); font-weight: 600; }
+        .ld-stage-check {
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #16a34a; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .ld-stage-check svg { width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round; }
+        .ld-stage-connector {
+            position: absolute;
+            left: 26px;
+            bottom: -9px;
+            width: 2px;
+            height: 9px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+        .ld-stage-connector.done { background: #86efac; }
+
+        /* ── Stage content ── */
+        .ld-stage-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0px 20px;
+            background: white;
+        }
+        .ld-stage-content::-webkit-scrollbar { width: 5px; }
+        .ld-stage-content::-webkit-scrollbar-thumb { background: #e5e7eb;}
+        .ld-sc-header {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--r-lg);
-            padding: 24px 20px 20px;
-            position: relative;
-        }
-        .ld-pipeline-track {
+            padding: 14px 18px;
+            margin-bottom: 14px;
             display: flex;
             align-items: flex-start;
-            position: relative;
+            justify-content: space-between;
+            gap: 16px;
         }
-        .ld-pipeline-arrow {
-            position:absolute;top:18px;left:0;right:0;height:3px;
-            background:#e5e7eb;z-index:0;
+        .ld-sc-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+        .ld-sc-desc { font-size: 12px; color: var(--text-3); }
+        .ld-sc-meta { display: flex; gap: 28px; flex-shrink: 0; }
+        .ld-sc-meta-item { text-align: right; }
+        .ld-sc-meta-label { font-size: 10.5px; color: var(--text-3); margin-bottom: 2px; }
+        .ld-sc-meta-value { font-size: 12.5px; font-weight: 600; color: var(--text); }
+        .ld-sc-btn {
+            display: flex; align-items: center; gap: 5px;
+            background: var(--surface); border: 1px solid var(--border-strong);
+            color: var(--brand); font-size: 12px; font-weight: 600;
+            padding: 6px 12px; border-radius: var(--r-md);
+            cursor: pointer; font-family: var(--font); white-space: nowrap;
         }
-        .ld-pipeline-progress {
-            position:absolute;top:0;left:0;height:100%;
-            background:#16a34a;border-radius:2px;
-            transition:width 0.3s;
+        .ld-sc-btn svg { width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+        .ld-sc-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
         }
-        .ld-step {
-            flex:1;display:flex;flex-direction:column;align-items:center;
-            position:relative;z-index:1;
+        .ld-sc-section-title {
+            display: flex; align-items: center; gap: 7px;
+            font-size: 13px; font-weight: 700; color: var(--text);
+            margin-bottom: 14px;
         }
-        .ld-step-circle {
-            width:36px;height:36px;border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            font-size:13px;font-weight:700;
-            border:3px solid #e5e7eb;
-            background:#fff;
-            flex-shrink:0;
+        .ld-sc-section-title svg { width:15px;height:15px;stroke:var(--brand);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round; }
+        .ld-form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+        .ld-form-grid.cols2 { grid-template-columns: 1fr 1fr; }
+        .ld-form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+        .ld-form-label { font-size: 11px; color: var(--text-3); margin-bottom: 4px; }
+        .ld-form-input {
+            width: 100%; background: #f9fafb; border: 1px solid var(--border-strong);
+            border-radius: var(--r-sm); padding: 7px 10px;
+            font-size: 12.5px; font-family: var(--font); color: var(--text); outline: none;
         }
-        .ld-step-circle.done { background:#16a34a;border-color:#16a34a;color:#fff; }
-        .ld-step-circle.done svg { width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round; }
-        .ld-step-circle.current { background:var(--brand);border-color:var(--brand);color:#fff; }
-        .ld-step-circle.locked { background:#f3f4f6;border-color:#e5e7eb;color:var(--text-4); }
-        .ld-step-circle.locked svg { width:14px;height:14px;stroke:var(--text-4);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
-        .ld-step-label { font-size:11.5px;font-weight:600;color:var(--text-2);margin-top:8px;text-align:center; }
-        .ld-step-date { font-size:10.5px;color:var(--text-4);margin-top:2px;text-align:center; }
-        .ld-step-date.current-tag { color:var(--brand);font-weight:600; }
-        .ld-pipeline-nav {
-            position:absolute;top:50%;transform:translateY(-50%);
-            width:28px;height:28px;border-radius:50%;
-            background:var(--surface);border:1px solid var(--border-strong);
-            display:flex;align-items:center;justify-content:center;
-            cursor:pointer;z-index:2;
+        .ld-form-input:focus { border-color: var(--brand); background: #fff; }
+        .ld-form-input-wrap { position: relative; }
+        .ld-form-input-wrap svg {
+            position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
+            width: 13px; height: 13px; stroke: var(--text-4); fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; pointer-events: none;
         }
-        .ld-pipeline-nav svg { width:12px;height:12px;stroke:var(--text-3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
-        .ld-pipeline-nav.prev { left:-14px; }
-        .ld-pipeline-nav.next { right:-14px; }
+        .ld-form-input-wrap .ld-form-input { padding-left: 28px; }
+        .ld-form-input-wrap .ld-form-suffix {
+            position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+            font-size: 12px; color: var(--text-3);
+        }
+        .ld-form-select {
+            width: 100%; background: #f9fafb; border: 1px solid var(--border-strong);
+            border-radius: var(--r-sm); padding: 7px 10px;
+            font-size: 12.5px; font-family: var(--font); color: var(--text); outline: none; cursor: pointer;
+        }
+        .ld-form-textarea {
+            width: 100%; background: #f9fafb; border: 1px solid var(--border-strong);
+            border-radius: var(--r-sm); padding: 7px 10px;
+            font-size: 12px; font-family: var(--font); color: var(--text); outline: none;
+            resize: vertical; min-height: 72px;
+        }
+        /* product table */
+        .ld-prod-table { width: 100%; border-collapse: collapse; }
+        .ld-prod-table th { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.3px; padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+        .ld-prod-table td { font-size: 12.5px; color: var(--text); padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        .ld-prod-table tr:last-child td { border-bottom: none; }
+        .ld-prod-action { display: flex; gap: 4px; }
+        .ld-prod-btn { width: 26px; height: 26px; border-radius: var(--r-sm); border: 1px solid var(--border-strong); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-3); }
+        .ld-prod-btn svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .ld-prod-btn.del { color: #ef4444; border-color: #fecaca; }
+        .ld-add-row { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--brand); cursor: pointer; margin-top: 10px; background: none; border: none; font-family: var(--font); }
+        .ld-add-row svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+        .ld-save-btn {
+            display: flex; align-items: center; justify-content: flex-end; margin-top: 4px;
+        }
+        .ld-save-btn button {
+            background: var(--brand); color: #fff; border: none;
+            padding: 8px 22px; border-radius: var(--r-md);
+            font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font);
+        }
+
+        /* ── Stage right panel ── */
+        .ld-stage-right {
+            width: 300px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            padding: 0 16px;
+        }
+        .chat-tab {
+            padding: 12px 4px;
+            margin-right: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-3);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: color 0.1s, border-color 0.1s;
+        }
+        .chat-tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+        .chat-panel { flex: 1; display: none; flex-direction: column; overflow: hidden; }
+        .chat-panel.active { display: flex; }
+        .notes-panel { flex: 1; display: none; flex-direction: column; padding: 14px; gap: 10px; overflow-y: auto; }
+        .notes-panel.active { display: flex; }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px 14px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+        .chat-date-divider { text-align: center; font-size: 11px; color: var(--text-4); margin: 2px 0; }
+        .chat-bubble-wrap { display: flex; flex-direction: column; }
+        .chat-bubble-wrap.out { align-items: flex-end; }
+        .chat-bubble-wrap.in  { align-items: flex-start; }
+        .chat-bubble {
+            max-width: 82%;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            line-height: 1.5;
+        }
+        .chat-bubble-wrap.out .chat-bubble { background: #ede9fe; color: #3b1fa8; border-bottom-right-radius: 3px; }
+        .chat-bubble-wrap.in  .chat-bubble { background: #f3f4f6; color: var(--text); border-bottom-left-radius: 3px; }
+        .chat-meta { font-size: 10.5px; color: var(--text-4); margin-top: 3px; display: flex; align-items: center; gap: 3px; }
+        .chat-tick { color: #6d28d9; }
+        .chat-input-bar {
+            flex-shrink: 0;
+            border-top: 1px solid var(--border);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .chat-input { flex: 1; border: none; outline: none; font-size: 12.5px; font-family: var(--font); color: var(--text); background: none; }
+        .chat-input::placeholder { color: var(--text-4); }
+        .chat-icon-btn { background: none; border: none; cursor: pointer; color: var(--text-3); display: flex; align-items: center; padding: 2px; }
+        .chat-icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .chat-send-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--brand); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .chat-send-btn svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+        .notes-textarea { width: 100%; flex: 1; border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: 10px; font-size: 12.5px; font-family: var(--font); color: var(--text); resize: none; outline: none; min-height: 120px; background: #f9fafb; }
+        .notes-textarea:focus { border-color: var(--brand); background: #fff; }
+        .notes-save-btn { background: var(--brand); color: #fff; border: none; padding: 7px 18px; border-radius: var(--r-md); font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: var(--font); align-self: flex-end; }
+        .hist-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 4px; }
+        .hist-left { width: 80px; flex-shrink: 0; text-align: right; }
+        .hist-date { font-size: 11.5px; font-weight: 600; color: var(--text); }
+        .hist-time { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+        .hist-dot-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; padding-top: 3px; }
+        .hist-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand); flex-shrink: 0; }
+        .hist-line { width: 2px; flex: 1; min-height: 28px; background: #e5e7eb; margin-top: 3px; }
+        .hist-item:last-of-type .hist-line { display: none; }
+        .hist-right { flex: 1; padding-top: 1px; }
+        .hist-text { font-size: 12px; font-weight: 500; color: var(--text); }
+        .hist-by { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+        .hist-view-all { font-size: 12px; font-weight: 600; color: var(--brand); cursor: pointer; margin-top: 10px; text-align: center; }
 
         /* ── Relative positioning for .main ── */
         .main { position: relative; }
@@ -1894,7 +2097,8 @@
         <!-- ── Sidebar ── -->
         <nav class="sidebar">
             <div class="sidebar-logo">
-                <img src="https://app.wele.in/assets/logo-CmKaEfKn.svg" alt="Wele Medical" style="height:25px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
+                <img class="logo-expanded" src="https://app.wele.in/assets/logo-CmKaEfKn.svg" alt="Wele Medical" style="height:25px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
+                <img class="logo-collapsed" src="cropped-welelogo.svg" alt="Wele" style="height:24px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
             </div>
 
             <div class="nav" id="nav"></div>
@@ -1977,7 +2181,7 @@
                 </div>
             </div>
             <div class="ld-hero">
-                <div class="ld-hero-top">
+                <div class="ld-hero-left">
                     <div class="ld-avatar" id="ld-avatar"></div>
                     <div class="ld-identity">
                         <div class="ld-name-row">
@@ -1993,6 +2197,27 @@
                                 <svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="14" rx="1.5"/><path d="M10 8v6M7 11h6"/></svg>
                                 <span id="ld-hosp"></span>
                             </div>
+                        </div>
+                        <div class="ld-actions-bar">
+                            <button class="ld-action-btn">
+                                <svg viewBox="0 0 20 20"><path d="M4 3h3.5l1.5 3.5-2 1.5a9 9 0 004.5 4.5L13.5 10l4 1.5V15a1.5 1.5 0 01-1.5 1.5C8 16.5 1.5 10 1.5 3.5A1.5 1.5 0 013 3z"/></svg>
+                                Call
+                            </button>
+                            <button class="ld-action-btn">
+                                <svg viewBox="0 0 20 20"><path d="M2 4h16v9H8l-4 3v-3H2z"/></svg>
+                                Message
+                            </button>
+                            <button class="ld-action-btn">
+                                <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="13" rx="2"/><path d="M2 7l8 5 8-5"/></svg>
+                                Email
+                            </button>
+                            <button class="ld-action-btn">
+                                <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="6"/><path d="M15 15l-3-3"/></svg>
+                                Directions
+                            </button>
+                            <button class="ld-action-btn">
+                                <svg viewBox="0 0 20 20"><circle cx="5" cy="10" r="1.4" fill="currentColor" stroke="none"/><circle cx="10" cy="10" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.4" fill="currentColor" stroke="none"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -2022,34 +2247,107 @@
                     </div>
                 </div>
             </div>
-            <div class="ld-actions-bar">
-                <button class="ld-action-btn">
-                    <svg viewBox="0 0 20 20"><path d="M4 3h3.5l1.5 3.5-2 1.5a9 9 0 004.5 4.5L13.5 10l4 1.5V15a1.5 1.5 0 01-1.5 1.5C8 16.5 1.5 10 1.5 3.5A1.5 1.5 0 013 3z"/></svg>
-                    Call
-                </button>
-                <button class="ld-action-btn">
-                    <svg viewBox="0 0 20 20"><path d="M2 4h16v9H8l-4 3v-3H2z"/></svg>
-                    Message
-                </button>
-                <button class="ld-action-btn">
-                    <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="13" rx="2"/><path d="M2 7l8 5 8-5"/></svg>
-                    Email
-                </button>
-                <button class="ld-action-btn">
-                    <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="6"/><path d="M15 15l-3-3"/></svg>
-                    Directions
-                </button>
-                <button class="ld-action-btn">
-                    <svg viewBox="0 0 20 20"><circle cx="5" cy="10" r="1.4" fill="currentColor" stroke="none"/><circle cx="10" cy="10" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.4" fill="currentColor" stroke="none"/></svg>
-                </button>
-            </div>
             <div class="ld-body">
-                <div class="ld-pipeline">
-                    <button class="ld-pipeline-nav prev"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg></button>
-                    <div class="ld-pipeline-track" id="ld-pipeline-track">
-                        <div class="ld-pipeline-arrow"><div class="ld-pipeline-progress" id="ld-progress"></div></div>
+                <!-- Left: Stage sidebar -->
+                <div class="ld-stage-sidebar">
+                    <div class="ld-stage-sidebar-title">Stage Details</div>
+                    <div id="ld-stage-list"></div>
+                </div>
+                <!-- Center: Stage content -->
+                <div class="ld-stage-content" id="ld-stage-content"></div>
+                <!-- Right: Chat / Notes -->
+                <div class="ld-stage-right">
+                    <div class="chat-tabs">
+                        <div class="chat-tab active" data-tab="chat">Chat</div>
+                        <div class="chat-tab" data-tab="notes">Notes</div>
+                        <div class="chat-tab" data-tab="history">History</div>
                     </div>
-                    <button class="ld-pipeline-nav next"><svg viewBox="0 0 12 12"><path d="M4 2l4 4-4 4"/></svg></button>
+                    <!-- Chat panel -->
+                    <div class="chat-panel active" id="chat-panel">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="chat-date-divider">Today</div>
+                            <div class="chat-bubble-wrap out">
+                                <div class="chat-bubble">Hi Ananya! 👋<br>How can I help you today?</div>
+                                <div class="chat-meta">04:15 PM <span class="chat-tick">✓✓</span></div>
+                            </div>
+                            <div class="chat-bubble-wrap in">
+                                <div class="chat-bubble">Hi! I'm interested in the AI & ML with Python course. Can you share more details about the curriculum?</div>
+                                <div class="chat-meta">04:16 PM</div>
+                            </div>
+                            <div class="chat-bubble-wrap out">
+                                <div class="chat-bubble">Sure! I'll share the course details with you. The course includes Python, ML basics, projects and more.</div>
+                                <div class="chat-meta">04:17 PM <span class="chat-tick">✓✓</span></div>
+                            </div>
+                            <div class="chat-bubble-wrap in">
+                                <div class="chat-bubble">That sounds great! Also, when is the next batch starting?</div>
+                                <div class="chat-meta">04:18 PM</div>
+                            </div>
+                            <div class="chat-bubble-wrap out">
+                                <div class="chat-bubble">The next batch starts on 10th July. Would you like to schedule a demo session with our mentor?</div>
+                                <div class="chat-meta">04:19 PM <span class="chat-tick">✓✓</span></div>
+                            </div>
+                            <div class="chat-bubble-wrap in">
+                                <div class="chat-bubble">Yes, please. Weekday evenings are better for me.</div>
+                                <div class="chat-meta">04:20 PM</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-bar">
+                            <input class="chat-input" placeholder="Type a message..." id="chat-input">
+                            <button class="chat-icon-btn" aria-label="Attach">
+                                <svg viewBox="0 0 20 20"><path d="M16 10l-5 5a4 4 0 01-5.7-5.7l6-6a2.5 2.5 0 013.5 3.5l-6 6a1 1 0 01-1.4-1.4l5-5"/></svg>
+                            </button>
+                            <button class="chat-icon-btn" aria-label="Emoji">
+                                <svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><path d="M7 11s1 2 3 2 3-2 3-2"/><circle cx="7.5" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="12.5" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
+                            </button>
+                            <button class="chat-send-btn" id="chat-send">
+                                <svg viewBox="0 0 20 20"><path d="M3 10l14-7-7 14V10H3z" fill="white" stroke="none"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Notes panel -->
+                    <div class="notes-panel" id="notes-panel">
+                        <textarea class="notes-textarea" placeholder="Write your notes here..."></textarea>
+                        <button class="notes-save-btn">Save Notes</button>
+                    </div>
+                    <!-- History panel -->
+                    <div class="notes-panel" id="history-panel">
+                        <div class="hist-item">
+                            <div class="hist-left"><div class="hist-date">Jun 30, 2024</div><div class="hist-time">11:30 AM</div></div>
+                            <div class="hist-dot-wrap"><div class="hist-dot"></div><div class="hist-line"></div></div>
+                            <div class="hist-right"><div class="hist-text">Stage Changed to Negotiation</div><div class="hist-by">by Arjun Kumar</div></div>
+                        </div>
+                        <div class="hist-item">
+                            <div class="hist-left"><div class="hist-date">Jun 27, 2024</div><div class="hist-time">04:15 PM</div></div>
+                            <div class="hist-dot-wrap"><div class="hist-dot"></div><div class="hist-line"></div></div>
+                            <div class="hist-right"><div class="hist-text">Stage Changed to Sample Issued</div><div class="hist-by">by Arjun Kumar</div></div>
+                        </div>
+                        <div class="hist-item">
+                            <div class="hist-left"><div class="hist-date">Jun 26, 2024</div><div class="hist-time">02:00 PM</div></div>
+                            <div class="hist-dot-wrap"><div class="hist-dot"></div><div class="hist-line"></div></div>
+                            <div class="hist-right"><div class="hist-text">Stage Changed to Product Demo</div><div class="hist-by">by Arjun Kumar</div></div>
+                        </div>
+                        <div class="hist-item">
+                            <div class="hist-left"><div class="hist-date">Jun 24, 2024</div><div class="hist-time">10:45 AM</div></div>
+                            <div class="hist-dot-wrap"><div class="hist-dot"></div><div class="hist-line"></div></div>
+                            <div class="hist-right"><div class="hist-text">Stage Changed to Follow Up</div><div class="hist-by">by Anita Sharma</div></div>
+                        </div>
+                        <div class="hist-item">
+                            <div class="hist-left"><div class="hist-date">Jun 22, 2024</div><div class="hist-time">03:30 PM</div></div>
+                            <div class="hist-dot-wrap"><div class="hist-dot"></div><div class="hist-line"></div></div>
+                            <div class="hist-right"><div class="hist-text">Stage Changed to Contacted</div><div class="hist-by">by Arjun Kumar</div></div>
+                        </div>
+                        <div class="hist-item">
+                            <div class="hist-left"><div class="hist-date">Jun 21, 2024</div><div class="hist-time">09:15 AM</div></div>
+                            <div class="hist-dot-wrap"><div class="hist-dot"></div><div class="hist-line"></div></div>
+                            <div class="hist-right"><div class="hist-text">Lead Assigned to Arjun Kumar</div><div class="hist-by">by Admin</div></div>
+                        </div>
+                        <div class="hist-item">
+                            <div class="hist-left"><div class="hist-date">Jun 20, 2024</div><div class="hist-time">08:00 AM</div></div>
+                            <div class="hist-dot-wrap"><div class="hist-dot" style="background:#16a34a"></div></div>
+                            <div class="hist-right"><div class="hist-text">Lead Created — New Lead</div><div class="hist-by">by System</div></div>
+                        </div>
+                        <div class="hist-view-all">View Full History</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2161,13 +2459,18 @@
                                 <span class="owner-trigger-text" id="dd-courses-text">Select course</span>
                                 <span class="owner-trigger-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>
                             </button>
-                            <div class="owner-dropdown-panel" id="dd-courses-panel" style="width:210px">
-                                <div class="owner-list" style="height:auto;max-height:220px;padding:6px 8px">
-                                    <label class="fg-check-row"><input type="checkbox" value="aiml_main"> AI/ML - Main Course</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="aiml_mini"> AI/ML - Mini Course</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="n8n_mini"> N8N - Mini Course</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="playwright"> Playwright</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="datascience"> Data Science</label>
+                            <div class="owner-dropdown-panel" id="dd-courses-panel">
+                                <div class="owner-search">
+                                    <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="6"/><path d="M15 15l-3-3"/></svg>
+                                    <input type="text" id="courses-search-input" placeholder="Search courses…">
+                                </div>
+                                <div class="owner-select-all-row" id="courses-select-all"></div>
+                                <div class="owner-list" id="courses-list"></div>
+                                <div class="owner-panel-footer">
+                                    <div class="owner-footer-top">
+                                        <span class="owner-footer-count" id="courses-footer-count"></span>
+                                        <span class="owner-clear" id="courses-clear">Clear</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2181,13 +2484,18 @@
                                 <span class="owner-trigger-text" id="dd-campaigns-text">Select campaign</span>
                                 <span class="owner-trigger-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>
                             </button>
-                            <div class="owner-dropdown-panel" id="dd-campaigns-panel" style="width:210px">
-                                <div class="owner-list" style="height:auto;max-height:220px;padding:6px 8px">
-                                    <label class="fg-check-row"><input type="checkbox" value="aiml"> AI/ML</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="playwright"> Playwright</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="generic"> Generic Campaign</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="workshop"> WorkShop Campaign</label>
-                                    <label class="fg-check-row"><input type="checkbox" value="website"> Website Campaign</label>
+                            <div class="owner-dropdown-panel" id="dd-campaigns-panel">
+                                <div class="owner-search">
+                                    <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="6"/><path d="M15 15l-3-3"/></svg>
+                                    <input type="text" id="campaigns-search-input" placeholder="Search campaigns…">
+                                </div>
+                                <div class="owner-select-all-row" id="campaigns-select-all"></div>
+                                <div class="owner-list" id="campaigns-list"></div>
+                                <div class="owner-panel-footer">
+                                    <div class="owner-footer-top">
+                                        <span class="owner-footer-count" id="campaigns-footer-count"></span>
+                                        <span class="owner-clear" id="campaigns-clear">Clear</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2614,14 +2922,26 @@
 
         panel.addEventListener('click', (e) => e.stopPropagation());
 
+        function positionPanel(trig, pan) {
+            pan.style.visibility = 'hidden';
+            pan.style.display = 'block';
+            const rect = trig.getBoundingClientRect();
+            const h = pan.offsetHeight;
+            pan.style.display = '';
+            pan.style.visibility = '';
+            const top = (window.innerHeight - rect.bottom < h + 10 && rect.top > h + 10)
+                ? rect.top - h - 6
+                : rect.bottom + 6;
+            pan.style.top = top + 'px';
+            pan.style.left = rect.left + 'px';
+        }
+
         trigger.addEventListener('click', (e) => {
             e.stopPropagation();
             const willOpen = !dropdown.classList.contains('open');
             dropdown.classList.toggle('open', willOpen);
             if (willOpen) {
-                const rect = trigger.getBoundingClientRect();
-                panel.style.top = (rect.bottom + 6) + 'px';
-                panel.style.left = rect.left + 'px';
+                positionPanel(trigger, panel);
                 searchInput.value = '';
                 renderList('');
                 setTimeout(() => searchInput.focus(), 0);
@@ -2651,7 +2971,7 @@
         renderChips();
         renderTrigger();
         /* ── Generic filter dropdowns (date, stages, source, courses, campaigns) ── */
-        ['dd-date', 'dd-source', 'dd-courses', 'dd-campaigns'].forEach(id => {
+        ['dd-date', 'dd-source'].forEach(id => {
             const dd = document.getElementById(id);
             const trig = dd.querySelector('.owner-dropdown-trigger');
             const pan = dd.querySelector('.owner-dropdown-panel');
@@ -2662,9 +2982,7 @@
                 document.querySelectorAll('.owner-dropdown.open').forEach(d => d.classList.remove('open'));
                 dd.classList.toggle('open', willOpen);
                 if (willOpen) {
-                    const rect = trig.getBoundingClientRect();
-                    pan.style.top = (rect.bottom + 6) + 'px';
-                    pan.style.left = rect.left + 'px';
+                    positionPanel(trig, pan);
                 }
             });
             pan.addEventListener('change', () => updateDdLabel(id));
@@ -2673,8 +2991,97 @@
         // store placeholders
         document.getElementById('dd-date-text').dataset.placeholder = 'Select range';
         document.getElementById('dd-source-text').dataset.placeholder = 'Select source';
-        document.getElementById('dd-courses-text').dataset.placeholder = 'Select course';
-        document.getElementById('dd-campaigns-text').dataset.placeholder = 'Select campaign';
+
+        /* ── Courses multi-select ── */
+        const COURSES_LIST = [
+            'AI/ML - Main Course', 'AI/ML - Mini Course', 'N8N - Mini Course', 'Playwright',
+            'Data Science with Python', 'Java Full Stack Development', 'Python Full Stack Development',
+            'MERN Stack Development', 'React.js Development', 'Angular Full Stack',
+            'Node.js & Express', 'Django & REST APIs', 'Flutter App Development',
+            'UI/UX Design with Figma', 'Power BI & Data Analytics', 'Cloud Computing with AWS',
+            'Cyber Security & Ethical Hacking', 'DevOps & Kubernetes', 'Machine Learning with R',
+            'Blockchain Development', 'iOS App Development (Swift)', 'Android Development (Kotlin)',
+            'Salesforce CRM Development', 'Tableau & Power BI', 'Selenium Test Automation',
+        ];
+        const CAMPAIGNS_LIST = [
+            'AI/ML Campaign', 'Playwright Campaign', 'Generic Campaign', 'WorkShop Campaign',
+            'Website Campaign', 'Summer Batch 2024', 'LinkedIn Outreach', 'Instagram Ads',
+            'Facebook Ads', 'Google Ads - Python', 'Referral Program', 'Email Blast - July',
+            'WhatsApp Broadcast', 'YouTube Promo', 'Webinar - Data Science', 'Demo Day Campaign',
+            'Early Bird Offer', 'Festive Discount', 'Corporate Training Drive', 'College Outreach',
+        ];
+
+        function initMultiSelect({ items, ddId, triggerId, textId, searchId, listId, selectAllId, footerCountId, clearId }) {
+            const data = items.map((name, i) => ({ id: 'i' + i, name, checked: false }));
+            const dd = document.getElementById(ddId);
+            const trig = document.getElementById(triggerId);
+            const textEl = document.getElementById(textId);
+            const searchEl = document.getElementById(searchId);
+            const listEl = document.getElementById(listId);
+            const selectAllEl = document.getElementById(selectAllId);
+            const footerEl = document.getElementById(footerCountId);
+            const clearEl = document.getElementById(clearId);
+            const panel = dd.querySelector('.owner-dropdown-panel');
+
+            function renderTrigger() {
+                const n = data.filter(o => o.checked).length;
+                textEl.textContent = n === 0 ? trig.dataset.placeholder || 'Select' : n === data.length ? 'All selected' : n + ' selected';
+            }
+            function renderFooter() {
+                const n = data.filter(o => o.checked).length;
+                footerEl.textContent = n === 0 ? 'None selected' : n + ' selected';
+            }
+            function renderSelectAll(q) {
+                const visible = data.filter(o => o.name.toLowerCase().includes(q));
+                const allChecked = visible.length > 0 && visible.every(o => o.checked);
+                const someChecked = visible.some(o => o.checked);
+                const cbClass = allChecked ? 'checked' : someChecked ? 'indeterminate' : '';
+                selectAllEl.style.display = q ? 'none' : 'flex';
+                selectAllEl.innerHTML = `<div class="owner-checkbox ${cbClass}"><svg class="icon-check" viewBox="0 0 10 10"><polyline points="2,5 4,7 8,3"/></svg><svg class="icon-dash" viewBox="0 0 10 10"><line x1="2" y1="5" x2="8" y2="5"/></svg></div><div class="owner-name">Select All</div>`;
+                selectAllEl.onclick = () => {
+                    const makeChecked = !visible.every(o => o.checked);
+                    visible.forEach(o => o.checked = makeChecked);
+                    renderAll(searchEl.value.trim().toLowerCase());
+                };
+            }
+            function renderList(q) {
+                listEl.innerHTML = '';
+                const visible = data.filter(o => o.name.toLowerCase().includes(q));
+                if (!visible.length) { listEl.innerHTML = '<div class="owner-empty">No results</div>'; return; }
+                visible.forEach(o => {
+                    const row = document.createElement('div');
+                    row.className = 'owner-row';
+                    row.innerHTML = `<div class="owner-checkbox${o.checked ? ' checked' : ''}"><svg class="icon-check" viewBox="0 0 10 10"><polyline points="2,5 4,7 8,3"/></svg></div><div class="owner-name">${o.name}</div>`;
+                    row.addEventListener('click', () => {
+                        o.checked = !o.checked;
+                        row.querySelector('.owner-checkbox').classList.toggle('checked', o.checked);
+                        renderSelectAll(q); renderFooter(); renderTrigger();
+                    });
+                    listEl.appendChild(row);
+                });
+            }
+            function renderAll(q) { renderSelectAll(q); renderList(q); renderFooter(); renderTrigger(); }
+
+            panel.addEventListener('click', e => e.stopPropagation());
+            trig.addEventListener('click', e => {
+                e.stopPropagation();
+                const willOpen = !dd.classList.contains('open');
+                document.querySelectorAll('.owner-dropdown.open').forEach(d => d.classList.remove('open'));
+                dd.classList.toggle('open', willOpen);
+                if (willOpen) {
+                    positionPanel(trig, panel);
+                    searchEl.value = '';
+                    renderAll('');
+                    setTimeout(() => searchEl.focus(), 0);
+                }
+            });
+            searchEl.addEventListener('input', () => renderAll(searchEl.value.trim().toLowerCase()));
+            clearEl.addEventListener('click', e => { e.stopPropagation(); data.forEach(o => o.checked = false); renderAll(searchEl.value.trim().toLowerCase()); });
+            renderTrigger();
+        }
+
+        initMultiSelect({ items: COURSES_LIST, ddId: 'dd-courses', triggerId: 'dd-courses-trigger', textId: 'dd-courses-text', searchId: 'courses-search-input', listId: 'courses-list', selectAllId: 'courses-select-all', footerCountId: 'courses-footer-count', clearId: 'courses-clear' });
+        initMultiSelect({ items: CAMPAIGNS_LIST, ddId: 'dd-campaigns', triggerId: 'dd-campaigns-trigger', textId: 'dd-campaigns-text', searchId: 'campaigns-search-input', listId: 'campaigns-list', selectAllId: 'campaigns-select-all', footerCountId: 'campaigns-footer-count', clearId: 'campaigns-clear' });
 
         /* ── Push-button toggle groups (msgwin, contact) ── */
         ['msgwin-btns', 'contact-btns'].forEach(id => {
@@ -2998,17 +3405,164 @@ function updateDdLabel(id) {
             if (currentView === 'full') renderFullView();
         });
 
-        /* ── Lead Detail ── */
         const PIPELINE_STAGES = [
-            { label: 'New Lead',       date: 'Jun 20, 2024' },
-            { label: 'Contacted',      date: 'Jun 21, 2024' },
-            { label: 'Qualified',      date: 'Jun 24, 2024' },
-            { label: 'Demo',   date: 'Jun 26, 2024' },
-            { label: 'Payment',  date: 'Jun 27, 2024' },
-            { label: 'Closed Won',    date: 'Current Stage', current: true },
-            { label: 'Closed Lost',date: '',  locked: true },
+            { label: 'New Lead',      date: 'Jun 20, 2024' },
+            { label: 'Contacted',     date: 'Jun 21, 2024' },
+            { label: 'Follow Up',     date: 'Jun 24, 2024' },
+            { label: 'Product Demo',  date: 'Jun 26, 2024' },
+            { label: 'Sample Issued', date: 'Jun 27, 2024' },
+            { label: 'Negotiation',   date: 'Current Stage', current: true },
+            { label: 'Order Confirmed', date: 'Pending', locked: true },
+            { label: 'Closed',        date: 'Pending', locked: true },
         ];
-        const STAGE_INDEX = { 'New lead':0,'Contacted':5,'Qualified':2,'Need identified':2,'Proposal sent':3,'Qualified':4,'Negotiation':5,'Converted':6,'Lost':7 };
+        const STAGE_INDEX = { 'New lead':0,'Contacted':1,'Follow up':2,'Need identified':3,'Proposal sent':4,'Negotiation':5,'Converted':6,'Lost':7 };
+        const STAGE_CHECKLIST = [
+            { text: 'Discuss requirement', done: true },
+            { text: 'Share pricing', done: true },
+            { text: 'Address objections', done: true },
+            { text: 'Share quotation', done: false },
+            { text: 'Confirm tentative order date', done: false },
+        ];
+
+        const STAGE_FORMS = {
+            'New Lead': {
+                desc: 'Capture initial lead information and source details',
+                sections: [{
+                    title: 'Lead Information',
+                    icon: '<svg viewBox="0 0 20 20"><circle cx="10" cy="7" r="4"/><path d="M3 18a7 7 0 0114 0"/></svg>',
+                    fields: `<div class="ld-form-grid cols3">
+                        <div><div class="ld-form-label">Lead Name</div><input class="ld-form-input" value=""></div>
+                        <div><div class="ld-form-label">Phone Number</div><input class="ld-form-input" value=""></div>
+                        <div><div class="ld-form-label">Email</div><input class="ld-form-input" value=""></div>
+                        <div><div class="ld-form-label">Lead Source</div><select class="ld-form-select"><option>LinkedIn</option><option>Instagram</option><option>Facebook</option><option>Referral</option><option>Website</option></select></div>
+                        <div><div class="ld-form-label">Lead Owner</div><select class="ld-form-select"><option>Arjun Kumar</option></select></div>
+                        <div><div class="ld-form-label">Notes</div><textarea class="ld-form-textarea"></textarea></div>
+                    </div>`
+                }]
+            },
+            'Contacted': {
+                desc: 'Log first contact attempt and response details',
+                sections: [{
+                    title: 'Contact Details',
+                    icon: '<svg viewBox="0 0 20 20"><path d="M4 3h3.5l1.5 3.5-2 1.5a9 9 0 004.5 4.5L13.5 10l4 1.5V15a1.5 1.5 0 01-1.5 1.5C8 16.5 1.5 10 1.5 3.5A1.5 1.5 0 013 3z"/></svg>',
+                    fields: `<div class="ld-form-grid cols3">
+                        <div><div class="ld-form-label">Contact Date</div><input class="ld-form-input" type="date" value="2024-06-21"></div>
+                        <div><div class="ld-form-label">Contact Mode</div><select class="ld-form-select"><option>Call</option><option>WhatsApp</option><option>Email</option><option>In Person</option></select></div>
+                        <div><div class="ld-form-label">Response</div><select class="ld-form-select"><option>Interested</option><option>Not Interested</option><option>Call Back Later</option><option>No Response</option></select></div>
+                        <div><div class="ld-form-label">Contacted By</div><select class="ld-form-select"><option>Arjun Kumar</option></select></div>
+                        <div><div class="ld-form-label">Next Follow Up</div><input class="ld-form-input" type="date"></div>
+                        <div><div class="ld-form-label">Remarks</div><textarea class="ld-form-textarea">Initial contact made. Lead showed interest.</textarea></div>
+                    </div>`
+                }]
+            },
+            'Follow Up': {
+                desc: 'Track follow-up activities and lead engagement',
+                sections: [{
+                    title: 'Follow Up Log',
+                    icon: '<svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="14" rx="1.5"/><path d="M3 8h14M7 2v3M13 2v3"/></svg>',
+                    fields: `<div class="ld-form-grid cols3">
+                        <div><div class="ld-form-label">Follow Up Date</div><input class="ld-form-input" type="date" value="2024-06-24"></div>
+                        <div><div class="ld-form-label">Follow Up Type</div><select class="ld-form-select"><option>Call</option><option>WhatsApp</option><option>Email</option><option>Meeting</option></select></div>
+                        <div><div class="ld-form-label">Status</div><select class="ld-form-select"><option>Completed</option><option>Pending</option><option>Rescheduled</option></select></div>
+                        <div><div class="ld-form-label">Done By</div><select class="ld-form-select"><option>Arjun Kumar</option></select></div>
+                        <div><div class="ld-form-label">Next Follow Up</div><input class="ld-form-input" type="date"></div>
+                        <div><div class="ld-form-label">Notes</div><textarea class="ld-form-textarea">Lead requested more information about the product.</textarea></div>
+                    </div>`
+                }]
+            },
+            'Product Demo': {
+                desc: 'Record product demonstration details and feedback',
+                sections: [{
+                    title: 'Demo Details',
+                    icon: '<svg viewBox="0 0 20 20"><rect x="2" y="3" width="16" height="12" rx="1.5"/><path d="M8 19h4M10 15v4"/><path d="M8 9l4-2v6l-4-2z" fill="currentColor" stroke="none"/></svg>',
+                    fields: `<div class="ld-form-grid cols3">
+                        <div><div class="ld-form-label">Demo Date</div><input class="ld-form-input" type="date" value="2024-06-26"></div>
+                        <div><div class="ld-form-label">Demo Mode</div><select class="ld-form-select"><option>In Person</option><option>Online</option></select></div>
+                        <div><div class="ld-form-label">Products Demonstrated</div><input class="ld-form-input" value="Cardiac Stent, Guide Wire"></div>
+                        <div><div class="ld-form-label">Conducted By</div><select class="ld-form-select"><option>Arjun Kumar</option></select></div>
+                        <div><div class="ld-form-label">Lead Feedback</div><select class="ld-form-select"><option>Positive</option><option>Neutral</option><option>Negative</option></select></div>
+                        <div><div class="ld-form-label">Remarks</div><textarea class="ld-form-textarea">Demo conducted successfully. Doctor was impressed with the stent quality.</textarea></div>
+                    </div>`
+                }]
+            },
+            'Sample Issued': {
+                desc: 'Track samples issued to the lead',
+                sections: [{
+                    title: 'Sample Details',
+                    icon: '<svg viewBox="0 0 20 20"><path d="M6 2v6L2 14h16L14 8V2"/><path d="M5 2h10"/></svg>',
+                    fields: `<div class="ld-form-grid cols3">
+                        <div><div class="ld-form-label">Issue Date</div><input class="ld-form-input" type="date" value="2024-06-27"></div>
+                        <div><div class="ld-form-label">Product Name</div><input class="ld-form-input" value="Cardiac Stent (2.5mm)"></div>
+                        <div><div class="ld-form-label">Quantity</div><input class="ld-form-input" value="2 Units"></div>
+                        <div><div class="ld-form-label">Issued By</div><select class="ld-form-select"><option>Arjun Kumar</option></select></div>
+                        <div><div class="ld-form-label">Expected Feedback Date</div><input class="ld-form-input" type="date"></div>
+                        <div><div class="ld-form-label">Remarks</div><textarea class="ld-form-textarea">Sample issued for trial. Awaiting feedback from doctor.</textarea></div>
+                    </div>`
+                }]
+            },
+            'Negotiation': {
+                desc: 'Discuss pricing, terms and finalize requirements',
+                sections: [
+                    {
+                        title: 'Pricing & Commercial Discussion',
+                        icon: '<svg viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2z"/><path d="M10 6v4l3 3"/></svg>',
+                        fields: `<div class="ld-form-grid" style="margin-bottom:12px">
+                            <div><div class="ld-form-label">Estimated Value (&#8377;)</div><input class="ld-form-input" value="2,45,000"></div>
+                            <div><div class="ld-form-label">Expected Order Date</div><div class="ld-form-input-wrap"><svg viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="14" rx="1.5"/><path d="M1 7h14M5 1v3M11 1v3"/></svg><input class="ld-form-input" value="Jul 15, 2024"></div></div>
+                            <div><div class="ld-form-label">Discount Offered (%)</div><div class="ld-form-input-wrap"><input class="ld-form-input" value="5"><span class="ld-form-suffix">%</span></div></div>
+                            <div><div class="ld-form-label">Payment Terms</div><select class="ld-form-select"><option>30 Days Credit</option><option>Advance</option><option>COD</option></select></div>
+                        </div>
+                        <div class="ld-form-grid cols3">
+                            <div><div class="ld-form-label">Pricing Discussed On</div><div class="ld-form-input-wrap"><svg viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="14" rx="1.5"/><path d="M1 7h14M5 1v3M11 1v3"/></svg><input class="ld-form-input" value="Jun 30, 2024"></div></div>
+                            <div><div class="ld-form-label">Pricing By</div><select class="ld-form-select"><option>Arjun Kumar</option></select></div>
+                            <div><div class="ld-form-label">Notes</div><textarea class="ld-form-textarea">Discussed pricing and availability. Doctor requested best price and quicker delivery.</textarea></div>
+                        </div>`
+                    },
+                    
+                ]
+            },
+            'Order Confirmed': {
+                desc: 'Confirm order details and delivery schedule',
+                sections: [{
+                    title: 'Order Details',
+                    icon: '<svg viewBox="0 0 20 20"><path d="M3 3h2l3 9h8l2-6H6"/><circle cx="9" cy="17" r="1.5"/><circle cx="15" cy="17" r="1.5"/></svg>',
+                    fields: `<div class="ld-form-grid cols3">
+                        <div><div class="ld-form-label">Order Date</div><input class="ld-form-input" type="date"></div>
+                        <div><div class="ld-form-label">Order Value (&#8377;)</div><input class="ld-form-input" value="2,45,000"></div>
+                        <div><div class="ld-form-label">PO Number</div><input class="ld-form-input" value=""></div>
+                        <div><div class="ld-form-label">Expected Delivery</div><input class="ld-form-input" type="date"></div>
+                        <div><div class="ld-form-label">Payment Status</div><select class="ld-form-select"><option>Pending</option><option>Partial</option><option>Paid</option></select></div>
+                        <div><div class="ld-form-label">Remarks</div><textarea class="ld-form-textarea"></textarea></div>
+                    </div>`
+                }]
+            },
+            'Closed': {
+                desc: 'Mark lead as closed and record final outcome',
+                sections: [{
+                    title: 'Closure Details',
+                    icon: '<svg viewBox="0 0 20 20"><path d="M4 10l5 5 8-8"/></svg>',
+                    fields: `<div class="ld-form-grid cols3">
+                        <div><div class="ld-form-label">Closure Date</div><input class="ld-form-input" type="date"></div>
+                        <div><div class="ld-form-label">Outcome</div><select class="ld-form-select"><option>Won</option><option>Lost</option></select></div>
+                        <div><div class="ld-form-label">Final Value (&#8377;)</div><input class="ld-form-input" value=""></div>
+                        <div><div class="ld-form-label">Lost Reason</div><select class="ld-form-select"><option>N/A</option><option>Price</option><option>Competitor</option><option>No Budget</option><option>No Need</option></select></div>
+                        <div><div class="ld-form-label">Closed By</div><select class="ld-form-select"><option>Arjun Kumar</option></select></div>
+                        <div><div class="ld-form-label">Remarks</div><textarea class="ld-form-textarea"></textarea></div>
+                    </div>`
+                }]
+            }
+        };
+
+        function renderStageContent(stageName, stageDate) {
+            const form = STAGE_FORMS[stageName];
+            if (!form) return '';
+            return form.sections.map(sec => `
+                <div class="ld-sc-section">
+                    <div class="ld-sc-section-title">${sec.icon} ${sec.title}</div>
+                    ${sec.fields}
+                    <div class="ld-save-btn" style="margin-top:14px"><button>Save</button></div>
+                </div>`).join('');
+        }
 
         function openDetail(d, av, st) {
             document.getElementById('ld-avatar').style.background = av.bg;
@@ -3023,25 +3577,40 @@ function updateDdLabel(id) {
             document.getElementById('ld-hosp').textContent = d.hosp;
 
             const currentIdx = STAGE_INDEX[d.status] ?? 0;
-            const track = document.getElementById('ld-pipeline-track');
-            // clear old steps (keep arrow div)
-            [...track.querySelectorAll('.ld-step')].forEach(s => s.remove());
+
+            // Render stage sidebar
+            const stageList = document.getElementById('ld-stage-list');
+            stageList.innerHTML = '';
             PIPELINE_STAGES.forEach((s, i) => {
-                const step = document.createElement('div');
-                step.className = 'ld-step';
-                let circleClass = i < currentIdx ? 'done' : i === currentIdx ? 'current' : 'locked';
-                const inner = i < currentIdx
-                    ? '<svg viewBox="0 0 16 16"><polyline points="3,8 6,11 13,4"/></svg>'
-                    : s.locked ? '<svg viewBox="0 0 14 14"><rect x="3" y="6" width="8" height="7" rx="1"/><path d="M5 6V4a2 2 0 014 0v2"/></svg>'
-                    : i + 1;
-                step.innerHTML = `
-                    <div class="ld-step-circle ${circleClass}">${inner}</div>
-                    <div class="ld-step-label">${s.label}</div>
-                    <div class="ld-step-date${s.current ? ' current-tag' : ''}">${s.date}</div>`;
-                track.appendChild(step);
+                const item = document.createElement('div');
+                item.className = 'ld-stage-item' + (i === currentIdx ? ' active' : '');
+                const isDone = i < currentIdx;
+                const isCurrent = i === currentIdx;
+                const isLocked = s.locked;
+                let iconHtml;
+                if (isDone) iconHtml = `<div class="ld-stage-icon done"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>`;
+                else if (isCurrent) iconHtml = `<div class="ld-stage-icon active">${i+1}</div>`;
+                else if (isLocked) iconHtml = `<div class="ld-stage-icon locked"><svg viewBox="0 0 12 12"><rect x="2" y="5" width="8" height="6" rx="1"/><path d="M4 5V3.5a2 2 0 014 0V5"/></svg></div>`;
+                else iconHtml = `<div class="ld-stage-icon">${i+1}</div>`;
+                const checkHtml = isDone ? `<div class="ld-stage-check"><svg viewBox="0 0 10 10"><polyline points="2,5 4,7 8,3"/></svg></div>` : '';
+                const dateClass = isCurrent ? ' current-tag' : '';
+                item.innerHTML = iconHtml + `<div class="ld-stage-info"><div class="ld-stage-name">${s.label}</div><div class="ld-stage-date${dateClass}">${s.date}</div></div>` + checkHtml;
+                if (i < PIPELINE_STAGES.length - 1) {
+                    const conn = document.createElement('div');
+                    conn.className = 'ld-stage-connector' + (isDone ? ' done' : '');
+                    item.appendChild(conn);
+                }
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('#ld-stage-list .ld-stage-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    document.getElementById('ld-stage-content').innerHTML = renderStageContent(s.label, s.date);
+                });
+                stageList.appendChild(item);
             });
-            const pct = Math.min(100, (currentIdx / (PIPELINE_STAGES.length - 1)) * 100);
-            document.getElementById('ld-progress').style.width = pct + '%';
+
+            // Render stage content
+            const activeStage = PIPELINE_STAGES[currentIdx];
+            document.getElementById('ld-stage-content').innerHTML = renderStageContent(activeStage.label, activeStage.date);
 
             document.getElementById('lead-detail').classList.add('open');
         }
@@ -3053,6 +3622,36 @@ function updateDdLabel(id) {
         document.getElementById('ld-back').addEventListener('click', () => {
             document.getElementById('lead-detail').classList.remove('open');
         });
+
+        // Chat / Notes tabs
+        document.querySelectorAll('.chat-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const target = tab.dataset.tab;
+                document.getElementById('chat-panel').classList.toggle('active', target === 'chat');
+                document.getElementById('notes-panel').classList.toggle('active', target === 'notes');
+                document.getElementById('history-panel').classList.toggle('active', target === 'history');
+            });
+        });
+
+        // Send message
+        document.getElementById('chat-send').addEventListener('click', sendMsg);
+        document.getElementById('chat-input').addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg(); });
+        function sendMsg() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            const msgs = document.getElementById('chat-messages');
+            const now = new Date();
+            const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const wrap = document.createElement('div');
+            wrap.className = 'chat-bubble-wrap out';
+            wrap.innerHTML = `<div class="chat-bubble">${text}</div><div class="chat-meta">${time} <span class="chat-tick">✓✓</span></div>`;
+            msgs.appendChild(wrap);
+            msgs.scrollTop = msgs.scrollHeight;
+            input.value = '';
+        }
     </script>
 </body>
 </html>
