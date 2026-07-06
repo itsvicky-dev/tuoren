@@ -160,12 +160,141 @@
             stroke-linejoin: round;
         }
 
+        .nav-item.has-children { position: relative; }
+        .nav-caret {
+            margin-left: auto;
+            display: flex;
+            transition: transform 0.2s;
+        }
+        .nav-caret svg {
+            width: 11px; height: 11px;
+            stroke: currentColor; fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .nav-item.open .nav-caret { transform: rotate(180deg); }
+        .nav-children {
+            display: none;
+            flex-direction: column;
+        }
+        .nav-item.open + .nav-children { display: flex; }
+        .nav-child {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 7px 14px 7px 34px;
+            color: var(--sidebar-text);
+            font-size: 12px;
+            font-weight: 400;
+            cursor: pointer;
+            border-left: 2.5px solid transparent;
+            transition: background 0.1s, color 0.1s;
+            white-space: nowrap;
+        }
+        .nav-child:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.82); }
+        .nav-child.active { background: var(--sidebar-active-bg); border-left-color: var(--sidebar-active-border); color: #fff; font-weight: 500; }
+        .nav-child svg { width: 14px; height: 14px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
         .nav-bottom {
             border-top: 1px solid var(--sidebar-divider);
             padding: 6px 0;
         }
 
-        /* ── Main ── */
+        /* ── Collapsed sidebar ── */
+        .app.sidebar-collapsed .sidebar { width: 48px; overflow: visible; }
+        .app.sidebar-collapsed .logo-name,
+        .app.sidebar-collapsed .nav-label,
+        .app.sidebar-collapsed .nav-caret { display: none; }
+        .app.sidebar-collapsed .sidebar-logo { justify-content: center; padding: 14px 8px; }
+        .app.sidebar-collapsed .sidebar-logo img { height: 24px; }
+        .app.sidebar-collapsed .nav-children { display: none !important; }
+        .app.sidebar-collapsed .nav { overflow: visible; }
+        .app.sidebar-collapsed .nav-item {
+            justify-content: center;
+            padding: 7px 0;
+            gap: 0;
+            position: relative;
+            overflow: visible;
+        }
+
+        /* small caret btn next to icon — only for has-children in collapsed mode */
+        .nav-collapse-caret {
+            display: none;
+        }
+        .app.sidebar-collapsed .nav-item.has-children .nav-collapse-caret {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 12px;
+            height: 12px;
+            margin-left: 2px;
+            flex-shrink: 0;
+        }
+        .nav-collapse-caret svg {
+            width: 10px; height: 10px;
+            stroke: currentColor; fill: none;
+            stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+            transition: transform 0.2s;
+        }
+        .nav-item.flyout-open .nav-collapse-caret svg { transform: rotate(180deg); }
+
+        /* flyout panel — positioned via JS */
+        .nav-flyout {
+            display: none;
+            position: fixed;
+            background: #1e2d4a;
+            border-radius: var(--r-md);
+            min-width: 150px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 9999;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .nav-flyout.visible { display: block; }
+        .nav-flyout-label {
+            padding: 8px 14px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .nav-flyout-label.sep { border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .nav-flyout-child {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            font-size: 12px;
+            color: var(--sidebar-text);
+            cursor: pointer;
+            transition: background 0.1s, color 0.1s;
+        }
+        .nav-flyout-child:hover { background: rgba(255,255,255,0.07); color: #fff; }
+        .nav-flyout-child svg {
+            width: 14px; height: 14px; flex-shrink: 0;
+            stroke: currentColor; fill: none;
+            stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+        }
+        /* tooltip on hover for ALL items in collapsed mode */
+        .nav-tooltip {
+            display: none;
+            position: absolute;
+            left: calc(100% + 8px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1e2d4a;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: var(--r-sm);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+        .app.sidebar-collapsed .nav-item:hover .nav-tooltip,
+        .app.sidebar-collapsed .nav-bottom .nav-item:hover .nav-tooltip {
+            display: block;
+        }
         .main {
             flex: 1;
             display: flex;
@@ -433,15 +562,26 @@
             flex-shrink: 0;
             background: var(--surface);
             border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .filter-panel-header {
+            flex-shrink: 0;
+            padding: 0 14px 10px;
+            padding-top: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .filter-panel-body {
+            flex: 1;
             overflow-y: auto;
-            padding: 14px 0;
+            padding-bottom: 14px;
         }
 
-        .filter-panel::-webkit-scrollbar {
+        .filter-panel-body::-webkit-scrollbar {
             width: 4px;
         }
-
-        .filter-panel::-webkit-scrollbar-thumb {
+        .filter-panel-body::-webkit-scrollbar-thumb {
             background: #e5e7eb;
             border-radius: 4px;
         }
@@ -465,6 +605,113 @@
             text-transform: none;
             letter-spacing: 0;
             font-size: 11px;
+        }
+
+        /* ── New filter group styles ── */
+        .fg-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+        .fg-toggle svg {
+            transition: transform 0.15s;
+        }
+        .fg-toggle.collapsed svg {
+            transform: rotate(-90deg);
+        }
+        .fg-multi {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .fg-multi.hidden {
+            display: none;
+        }
+        .fg-check-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 3px 0;
+            font-size: 12px;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .fg-check-row input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: var(--brand);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .fg-push-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .fg-push {
+            padding: 4px 9px;
+            border-radius: var(--r-pill);
+            border: 1.5px solid var(--border-strong);
+            background: var(--surface);
+            font-size: 11.5px;
+            font-family: var(--font);
+            color: var(--text-2);
+            cursor: pointer;
+            transition: background 0.1s, border-color 0.1s, color 0.1s;
+            white-space: nowrap;
+        }
+        .fg-push:hover {
+            border-color: var(--brand);
+            color: var(--brand);
+        }
+        .fg-push.active {
+            background: var(--brand-soft);
+            border-color: var(--brand);
+            color: var(--brand-text);
+            font-weight: 600;
+        }
+        .fg-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .fg-radio-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 3.5px 0;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text);
+        }
+        .fg-radio-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1.5px solid #d1d5db;
+            background: #fff;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.1s;
+        }
+        .fg-radio-dot::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--brand);
+            display: none;
+        }
+        .fg-radio-row.active .fg-radio-dot {
+            border-color: var(--brand);
+        }
+        .fg-radio-row.active .fg-radio-dot::after {
+            display: block;
+        }
+        .fg-radio-row.active {
+            color: var(--brand-text);
+            font-weight: 500;
         }
 
         .filter-group {
@@ -853,18 +1100,29 @@
         /* ── Body ── */
         .body {
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 0;
+        }
+        .body-header {
+            flex-shrink: 0;
+            padding: 20px 20px 0;
+            background: var(--bg);
+        }
+        .body-scroll {
+            flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            overflow-x: hidden;
+            padding: 14px 20px 20px;
         }
-
-        .body::-webkit-scrollbar {
-            width: 6px;
+        .body-scroll.kanban-mode {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 14px 20px;
         }
-
-        .body::-webkit-scrollbar-thumb {
-            background: #e5e7eb;
-            border-radius: 4px;
-        }
+        .body-scroll::-webkit-scrollbar { width: 6px; }
+        .body-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
 
         /* ── Active filter bar ── */
         .active-filter-bar {
@@ -1094,6 +1352,42 @@
             border-left: 1px solid var(--border-strong);
         }
 
+        /* ── Table view ── */
+        .leads-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
+        .leads-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); background: #f9fafb; white-space: nowrap; }
+        .leads-table td { padding: 11px 14px; font-size: 12.5px; color: var(--text); border-bottom: 1px solid var(--border); vertical-align: middle; }
+        .leads-table tr:last-child td { border-bottom: none; }
+        .leads-table tr:hover td { background: #f9fafb; cursor: pointer; }
+        .tbl-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+        .tbl-name-cell { display: flex; align-items: center; gap: 9px; }
+
+        /* ── Kanban view ── */
+        .kanban-board { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 16px; height: 100%; align-items: flex-start; }
+        .kanban-board::-webkit-scrollbar { height: 6px; }
+        .kanban-board::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        .kanban-col { flex-shrink: 0; width: 300px; background: #f3f4f6; border-radius: 14px; display: flex; flex-direction: column; max-height: calc(100vh - 220px); }
+        .kanban-col-header { display: flex; align-items: center; gap: 10px; padding: 14px 14px 10px; flex-shrink: 0; }
+        .kanban-count-badge { width: 28px; height: 28px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--text-2); flex-shrink: 0; }
+        .kanban-col-title { font-size: 15px; font-weight: 700; color: var(--text); }
+        .kanban-search { position: relative; padding: 0 10px 10px; flex-shrink: 0; }
+        .kanban-search input { width: 100%; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px 7px 28px; font-size: 12px; font-family: var(--font); color: var(--text); outline: none; }
+        .kanban-search input:focus { border-color: var(--brand); }
+        .kanban-search svg { position: absolute; left: 19px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; stroke: var(--text-4); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .kanban-cards { flex: 1; overflow-y: auto; padding: 0 10px 10px; display: flex; flex-direction: column; gap: 8px; }
+        .kanban-cards::-webkit-scrollbar { width: 4px; }
+        .kanban-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        .kanban-empty { background: #fff; border: 1.5px dashed #e5e7eb; border-radius: 10px; padding: 28px 10px; text-align: center; font-size: 12.5px; color: #c0c4cc; }
+        .kanban-lead-row { background: #fff; border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: box-shadow 0.12s; }
+        .kanban-lead-row:hover { box-shadow: 0 2px 10px rgba(16,24,40,0.09); }
+        .kanban-row-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .kanban-cb { width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid #d1d5db; background: #fff; flex-shrink: 0; cursor: pointer; }
+        .kanban-row-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .kanban-row-pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-pill); white-space: nowrap; flex-shrink: 0; }
+        .kanban-row-bottom { display: flex; align-items: center; gap: 6px; }
+        .kanban-row-msg { flex: 1; font-size: 11.5px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .kanban-row-date { font-size: 11px; color: var(--text-4); white-space: nowrap; flex-shrink: 0; }
+        .kanban-tick svg { width: 13px; height: 13px; stroke: #16a34a; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
         /* ── Cards grid ── */
         .leads-grid {
             display: grid;
@@ -1219,7 +1513,7 @@
         .card-info-rows {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap:5px;
         }
 
         .card-info-row {
@@ -1282,6 +1576,15 @@
         .card-info-value.new{
             font-size: 12px;
             font-weight: 700;
+            color: var(--text);
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-info-value.newone{
+            font-size: 11px;
+            font-weight: 600;
             color: var(--text);
             margin-top: 1px;
             white-space: nowrap;
@@ -1591,8 +1894,7 @@
         <!-- ── Sidebar ── -->
         <nav class="sidebar">
             <div class="sidebar-logo">
-                <div class="logo-mark">T</div>
-                <div class="logo-name">TOUREN<em>✓</em> MEDICAL</div>
+                <img src="https://app.wele.in/assets/logo-CmKaEfKn.svg" alt="Wele Medical" style="height:25px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
             </div>
 
             <div class="nav" id="nav"></div>
@@ -1605,7 +1907,7 @@
 
             <!-- Topbar -->
             <header class="topbar">
-                <button class="topbar-hamburger" aria-label="Toggle menu">
+                <button class="topbar-hamburger" id="sidebar-toggle" aria-label="Toggle menu">
                     <svg viewBox="0 0 20 20">
                         <path d="M3 5h14M3 10h14M3 15h14" />
                     </svg>
@@ -1757,9 +2059,47 @@
 
                 <!-- Filter panel -->
                 <aside class="filter-panel">
+                    <div class="filter-panel-header">
                     <div class="filter-header">
                         Filters
-                        <span class="filter-clear">Clear all</span>
+                        <span class="filter-clear" id="filter-clear-all">Clear all</span>
+                    </div>
+                    </div>
+                    <div class="filter-panel-body">
+
+                    <!-- Date Range -->
+                    <div class="filter-group">
+                        <div class="filter-group-label">Date Range</div>
+                        <div class="owner-dropdown" id="dd-date">
+                            <button type="button" class="owner-dropdown-trigger" id="dd-date-trigger">
+                                <span class="owner-trigger-text" id="dd-date-text">Select range</span>
+                                <span class="owner-trigger-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>
+                            </button>
+                            <div class="owner-dropdown-panel" id="dd-date-panel" style="width:210px">
+                                <div class="owner-list" style="height:auto;max-height:220px;padding:6px 4px">
+                                    <div class="fg-radio-group" id="date-range-btns">
+                                        <div class="fg-radio-row" data-val="today"><div class="fg-radio-dot"></div> Today</div>
+                                        <div class="fg-radio-row" data-val="yesterday"><div class="fg-radio-dot"></div> Yesterday</div>
+                                        <div class="fg-radio-row" data-val="this_week"><div class="fg-radio-dot"></div> This Week</div>
+                                        <div class="fg-radio-row" data-val="last_week"><div class="fg-radio-dot"></div> Last Week</div>
+                                        <div class="fg-radio-row" data-val="last_7"><div class="fg-radio-dot"></div> Last 7 Days</div>
+                                        <div class="fg-radio-row" data-val="this_month"><div class="fg-radio-dot"></div> This Month</div>
+                                        <div class="fg-radio-row" data-val="last_month"><div class="fg-radio-dot"></div> Last Month</div>
+                                        <div class="fg-radio-row" data-val="custom"><div class="fg-radio-dot"></div> Custom Dates</div>
+                                    </div>
+                                    <div id="custom-date-range" style="display:none;margin-top:8px;flex-direction:column;gap:6px;padding:0 8px 4px">
+                                        <div><div style="font-size:11px;color:var(--text-3);margin-bottom:3px;">From</div><input type="date" class="filter-select" id="date-from" style="padding:5px 8px;"></div>
+                                        <div><div style="font-size:11px;color:var(--text-3);margin-bottom:3px;">To</div><input type="date" class="filter-select" id="date-to" style="padding:5px 8px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lead Stages -->
+                    <div class="filter-group">
+                        <div class="filter-group-label">Lead Stages</div>
+                        <div id="stage-list"></div>
                     </div>
 
                     <!-- Lead Owner multi-select -->
@@ -1775,12 +2115,8 @@
                             </button>
                             <div class="owner-dropdown-panel" id="owner-panel">
                                 <div class="owner-search">
-                                    <svg viewBox="0 0 20 20">
-                                        <circle cx="9" cy="9" r="6" />
-                                        <path d="M15 15l-3-3" />
-                                    </svg>
-                                    <input type="text" id="owner-search-input" placeholder="Search lead owners…"
-                                        aria-label="Search lead owners">
+                                    <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="6" /><path d="M15 15l-3-3" /></svg>
+                                    <input type="text" id="owner-search-input" placeholder="Search lead owners…" aria-label="Search lead owners">
                                 </div>
                                 <div class="owner-select-all-row" id="owner-select-all"></div>
                                 <div class="owner-list" id="owner-list"></div>
@@ -1795,58 +2131,98 @@
                         </div>
                     </div>
 
+                    <!-- Lead Source -->
                     <div class="filter-group">
-                        <div class="filter-group-label">Lead by stage</div>
-                        <div id="stage-list"></div>
-                    </div>
-
-                    <div class="filter-group">
-                        <div class="filter-group-label">
-                            Hospital
-                            <svg viewBox="0 0 12 12">
-                                <path d="M2 4l4 4 4-4" />
-                            </svg>
+                        <div class="filter-group-label">Lead Source</div>
+                        <div class="owner-dropdown" id="dd-source">
+                            <button type="button" class="owner-dropdown-trigger" id="dd-source-trigger">
+                                <span class="owner-trigger-text" id="dd-source-text">Select source</span>
+                                <span class="owner-trigger-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>
+                            </button>
+                            <div class="owner-dropdown-panel" id="dd-source-panel" style="width:210px">
+                                <div class="owner-list" style="height:auto;max-height:220px;padding:6px 8px">
+                                    <label class="fg-check-row"><input type="checkbox" value="Instagram"> Instagram</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="WhatsApp"> WhatsApp</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="Facebook"> Facebook</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="Website"> Website</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="Email"> Email</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="Reference"> Reference</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="LinkedIn"> LinkedIn</label>
+                                </div>
+                            </div>
                         </div>
-                        <select class="filter-select" aria-label="Hospital">
-                            <option>All hospitals</option>
-                        </select>
                     </div>
 
+                    <!-- Courses -->
                     <div class="filter-group">
-                        <div class="filter-group-label">
-                            Specialization
-                            <svg viewBox="0 0 12 12">
-                                <path d="M2 4l4 4 4-4" />
-                            </svg>
+                        <div class="filter-group-label">Courses</div>
+                        <div class="owner-dropdown" id="dd-courses">
+                            <button type="button" class="owner-dropdown-trigger" id="dd-courses-trigger">
+                                <span class="owner-trigger-text" id="dd-courses-text">Select course</span>
+                                <span class="owner-trigger-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>
+                            </button>
+                            <div class="owner-dropdown-panel" id="dd-courses-panel" style="width:210px">
+                                <div class="owner-list" style="height:auto;max-height:220px;padding:6px 8px">
+                                    <label class="fg-check-row"><input type="checkbox" value="aiml_main"> AI/ML - Main Course</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="aiml_mini"> AI/ML - Mini Course</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="n8n_mini"> N8N - Mini Course</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="playwright"> Playwright</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="datascience"> Data Science</label>
+                                </div>
+                            </div>
                         </div>
-                        <select class="filter-select" aria-label="Specialization">
-                            <option>All specializations</option>
-                        </select>
                     </div>
 
+                    <!-- Campaigns -->
                     <div class="filter-group">
-                        <div class="filter-group-label">
-                            Product interest
-                            <svg viewBox="0 0 12 12">
-                                <path d="M2 4l4 4 4-4" />
-                            </svg>
+                        <div class="filter-group-label">Campaigns</div>
+                        <div class="owner-dropdown" id="dd-campaigns">
+                            <button type="button" class="owner-dropdown-trigger" id="dd-campaigns-trigger">
+                                <span class="owner-trigger-text" id="dd-campaigns-text">Select campaign</span>
+                                <span class="owner-trigger-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>
+                            </button>
+                            <div class="owner-dropdown-panel" id="dd-campaigns-panel" style="width:210px">
+                                <div class="owner-list" style="height:auto;max-height:220px;padding:6px 8px">
+                                    <label class="fg-check-row"><input type="checkbox" value="aiml"> AI/ML</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="playwright"> Playwright</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="generic"> Generic Campaign</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="workshop"> WorkShop Campaign</label>
+                                    <label class="fg-check-row"><input type="checkbox" value="website"> Website Campaign</label>
+                                </div>
+                            </div>
                         </div>
-                        <select class="filter-select" aria-label="Product interest">
-                            <option>All products</option>
-                        </select>
                     </div>
 
-                    <div class="filter-group">
-                        <div class="filter-group-label">Date range</div>
-                        <select class="filter-select" aria-label="Date range">
-                            <option>Select date range</option>
-                        </select>
+                    <!-- Message Window -->
+                    <div class="filter-group" id="fg-msgwin">
+                        <div class="filter-group-label fg-toggle" data-target="fl-msgwin">Message Window <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></div>
+                        <div class="fg-multi" id="fl-msgwin">
+                            <div class="fg-push-group" id="msgwin-btns">
+                                <button class="fg-push" data-val="open">Session Open</button>
+                                <button class="fg-push" data-val="closed">Session Closed</button>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Contact Details -->
+                    <div class="filter-group" id="fg-contact">
+                        <div class="filter-group-label fg-toggle" data-target="fl-contact">Contact Details <svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></div>
+                        <div class="fg-multi" id="fl-contact">
+                            <div class="fg-push-group" id="contact-btns">
+                                <button class="fg-push" data-val="with_mail">With Mail</button>
+                                <button class="fg-push" data-val="without_mail">Without Mail</button>
+                                <button class="fg-push" data-val="with_mobile">With Mobile Number</button>
+                                <button class="fg-push" data-val="without_mobile">Without Mobile Number</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div><!-- end filter-panel-body -->
                 </aside>
 
                 <!-- Body -->
                 <main class="body">
 
+                    <div class="body-header">
                     <!-- Page header -->
                     <div class="page-header">
                         <div>
@@ -1864,19 +2240,19 @@
                                 </svg>
                                 <input type="text" placeholder="Search leads…" aria-label="Search leads">
                             </div>
-                            <button class="btn btn-ghost" aria-label="Filter">
+                            <!-- <button class="btn btn-ghost" aria-label="Filter">
                                 <svg viewBox="0 0 20 20">
                                     <path d="M3 6h14M6 10h8M9 14h2" />
                                 </svg>
-                            </button>
+                            </button> -->
                             <button class="btn btn-sort">
                                 Sort by: Recently added
                                 <svg viewBox="0 0 12 12">
                                     <path d="M2 4l4 4 4-4" />
                                 </svg>
                             </button>
-                            <div class="view-toggle" role="group" aria-label="View mode">
-                                <button class="view-btn active" aria-label="Grid view" aria-pressed="true">
+                            <div class="view-toggle" role="group" aria-label="View mode" id="view-toggle">
+                                <button class="view-btn active" data-view="card" aria-label="Card view" aria-pressed="true">
                                     <svg viewBox="0 0 16 16">
                                         <rect x="1" y="1" width="6" height="6" rx="1" />
                                         <rect x="9" y="1" width="6" height="6" rx="1" />
@@ -1884,9 +2260,15 @@
                                         <rect x="9" y="9" width="6" height="6" rx="1" />
                                     </svg>
                                 </button>
-                                <button class="view-btn" aria-label="List view" aria-pressed="false">
+                                <button class="view-btn" data-view="table" aria-label="Table view" aria-pressed="false">
                                     <svg viewBox="0 0 16 16">
                                         <path d="M1 4h14M1 8h14M1 12h14" />
+                                    </svg>
+                                </button>
+                                <button class="view-btn" data-view="full" aria-label="Full details view" aria-pressed="false">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                                        <rect x="1" y="1" width="14" height="5" rx="1"/>
+                                        <rect x="1" y="9" width="14" height="5" rx="1"/>
                                     </svg>
                                 </button>
                             </div>
@@ -1901,41 +2283,37 @@
 
                     <!-- Active owner filter bar -->
                     <div class="active-filter-bar" id="active-filter-bar"></div>
+                    </div><!-- end body-header -->
 
-                    <!-- Grid -->
+                    <div class="body-scroll">
+                    <!-- Card view -->
                     <div class="leads-grid" id="leads-grid"></div>
 
-                    <!-- Pagination -->
-                    <div class="pagination">
-                        <span class="pagination-info">Showing 1 to 20 of 1,985 leads</span>
-                        <div class="pagination-pages">
-                            <button class="page-btn" aria-label="Previous">
-                                <svg viewBox="0 0 12 12">
-                                    <path d="M8 2L4 6l4 4" />
-                                </svg>
-                            </button>
-                            <button class="page-btn active" aria-current="page">1</button>
-                            <button class="page-btn">2</button>
-                            <button class="page-btn">3</button>
-                            <button class="page-btn">4</button>
-                            <button class="page-btn">5</button>
-                            <button class="page-btn dots">…</button>
-                            <button class="page-btn">100</button>
-                            <button class="page-btn" aria-label="Next">
-                                <svg viewBox="0 0 12 12">
-                                    <path d="M4 2l4 4-4 4" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="per-page-row">
-                            <label for="per-page">Rows per page</label>
-                            <select id="per-page">
-                                <option>20 / page</option>
-                                <option>50 / page</option>
-                                <option>100 / page</option>
-                            </select>
-                        </div>
+                    <!-- Table view -->
+                    <table class="leads-table" id="leads-table" style="display:none">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Source</th>
+                                <th>Lead Owner</th>
+                                <th>Status</th>
+                                <th>Last Activity</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="leads-table-body"></tbody>
+                    </table>
+
+                    <!-- Full details / Kanban view -->
+                    <div class="kanban-board" id="leads-full" style="display:none"></div>
+
+                    <!-- Infinite scroll sentinel -->
+                    <div id="scroll-sentinel" style="height:40px;display:flex;align-items:center;justify-content:center;">
+                        <span id="scroll-loader" style="font-size:12px;color:var(--text-4);"></span>
                     </div>
+
+                    </div><!-- end body-scroll -->
 
                 </main>
             </div>
@@ -1966,39 +2344,107 @@
             stethoscope: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v7a5 5 0 0010 0V8"/><circle cx="15" cy="9" r="2.2"/><path d="M15 11.2v2.3a2.5 2.5 0 002.5 2.5"/></svg>',
             bookmark: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10a1 1 0 011 1v13l-6-3-6 3V4a1 1 0 011-1z"/></svg>',
             graduation: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l8-4 8 4-8 4-8-4z"/><path d="M5 9.5V14c0 1.1 3 2 5 2s5-.9 5-2V9.5"/><path d="M18 7v5"/></svg>',
+            whatsapp: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"/><path d="M7 8.5c.5 3 4.5 5 5.5 4.5M7 8.5c-.2-.8.2-1.5.8-1.8l1 1.8-1 1c.4.8 1 1.4 1.8 1.8l1-1 1.8 1c-.3.6-1 1-1.8.8"/></svg>',
+            instagram: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="4"/><circle cx="10" cy="10" r="3"/><circle cx="14.5" cy="5.5" r="0.5" fill="currentColor" stroke="none"/></svg>',
+            facebook: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"/><path d="M12 7h-1.5A1.5 1.5 0 009 8.5V11h3l-.5 3H9v5"/></svg>',
+            tags: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h6l8 8-6 6-8-8V3z"/><circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/></svg>',
+            campaign: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10l2-5 2 14-4-4H3V8z"/><path d="M3 12v4"/></svg>',
+            logs: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12M4 8h8M4 12h10M4 16h6"/></svg>',
+            roles: '<svg viewBox="0 0 20 20" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="3"/><path d="M2 17a6 6 0 0112 0"/><path d="M15 9l2 2 3-3"/></svg>',
         };
 
         /* ── Nav items ── */
         const navItems = [
             { label: 'Dashboard', icon: 'dashboard' },
             { label: 'Leads', icon: 'users', active: true },
-            { label: 'Sales Team', icon: 'users' },
-            { label: 'Hospitals', icon: 'hospital' },
-            { label: 'Doctors', icon: 'doctor' },
-            { label: 'Products', icon: 'package' },
-            { label: 'Activities', icon: 'activity' },
-            { label: 'Calendar', icon: 'calendar' },
-            { label: 'Samples', icon: 'flask' },
-            { label: 'Orders', icon: 'cart' },
+            { label: 'Chats', icon: 'chat', children: [
+                { label: 'WhatsApp', icon: 'whatsapp' },
+                { label: 'Instagram', icon: 'instagram' },
+                { label: 'Facebook', icon: 'facebook' },
+            ]},
+            { label: 'Tags', icon: 'tags' },
+            { label: 'Campaign', icon: 'campaign' },
+            { label: 'Calls', icon: 'phone' },
+            { label: 'Demo Calendar', icon: 'calendar' },
             { label: 'Reports', icon: 'chart' },
             { label: 'Analytics', icon: 'trending' },
             { label: 'Approvals', icon: 'checks' },
-            { label: 'Settings', icon: 'settings' },
+            { label: 'Logs', icon: 'logs' },
+            { label: 'Settings', icon: 'settings', children: [
+                { label: 'Users', icon: 'users' },
+                { label: 'Roles', icon: 'roles' },
+            ]},
         ];
         const navEl = document.getElementById('nav');
         navItems.forEach(n => {
             const el = document.createElement('div');
-            el.className = 'nav-item' + (n.active ? ' active' : '');
-            el.innerHTML = SVG[n.icon] + ' ' + n.label;
+            el.className = 'nav-item' + (n.active ? ' active' : '') + (n.children ? ' has-children' : '');
+            // flyout (tooltip for plain, submenu for children)
+            const flyout = document.createElement('div');
+            flyout.className = 'nav-flyout';
+            if (n.children) {
+                flyout.innerHTML = '<div class="nav-flyout-label sep">' + n.label + '</div>' +
+                    n.children.map(c => '<div class="nav-flyout-child">' + SVG[c.icon] + '<span>' + c.label + '</span></div>').join('');
+            } else {
+                flyout.innerHTML = '<div class="nav-flyout-label">' + n.label + '</div>';
+            }
+            el.innerHTML = SVG[n.icon] + '<span class="nav-label">' + n.label + '</span>' +
+                (n.children ? '<span class="nav-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>' +
+                              '<span class="nav-collapse-caret"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4"/></svg></span>' : '') +
+                '<span class="nav-tooltip">' + n.label + '</span>';
+            el.appendChild(flyout);
             navEl.appendChild(el);
+            if (n.children) {
+                const childWrap = document.createElement('div');
+                childWrap.className = 'nav-children';
+                n.children.forEach(c => {
+                    const cel = document.createElement('div');
+                    cel.className = 'nav-child';
+                    cel.innerHTML = SVG[c.icon] + '<span class="nav-label">' + c.label + '</span>';
+                    childWrap.appendChild(cel);
+                });
+                navEl.appendChild(childWrap);
+                // expanded mode: toggle children
+                el.addEventListener('click', (e) => {
+                    const isCollapsed = document.querySelector('.app').classList.contains('sidebar-collapsed');
+                    if (!isCollapsed) {
+                        el.classList.toggle('open');
+                        return;
+                    }
+                    // collapsed mode: caret click toggles flyout
+                    const caretBtn = el.querySelector('.nav-collapse-caret');
+                    if (!caretBtn || !caretBtn.contains(e.target)) return;
+                    e.stopPropagation();
+                    const isOpen = el.classList.contains('flyout-open');
+                    closeAllFlyouts();
+                    if (!isOpen) {
+                        const rect = el.getBoundingClientRect();
+                        flyout.style.left = (rect.right + 8) + 'px';
+                        flyout.style.top = rect.top + 'px';
+                        flyout.classList.add('visible');
+                        el.classList.add('flyout-open');
+                    }
+                });
+            }
         });
         const navBottom = document.getElementById('nav-bottom');
         [{ label: 'Help', icon: 'help' }, { label: 'Logout', icon: 'logout' }].forEach(n => {
             const el = document.createElement('div');
             el.className = 'nav-item';
-            el.innerHTML = SVG[n.icon] + ' ' + n.label;
+            const flyout2 = document.createElement('div');
+            flyout2.className = 'nav-flyout';
+            flyout2.innerHTML = '<div class="nav-flyout-label">' + n.label + '</div>';
+            el.innerHTML = SVG[n.icon] + '<span class="nav-label">' + n.label + '</span>' +
+                '<span class="nav-tooltip">' + n.label + '</span>';
+            el.appendChild(flyout2);
             navBottom.appendChild(el);
         });
+
+        function closeAllFlyouts() {
+            document.querySelectorAll('.nav-flyout.visible').forEach(f => f.classList.remove('visible'));
+            document.querySelectorAll('.nav-item.flyout-open').forEach(i => i.classList.remove('flyout-open'));
+        }
+        document.addEventListener('click', closeAllFlyouts);
 
         /* ── Stage filter ── */
         const stages = [
@@ -2184,12 +2630,90 @@
 
         document.addEventListener('click', () => {
             dropdown.classList.remove('open');
+            document.querySelectorAll('.owner-dropdown.open').forEach(d => d.classList.remove('open'));
+        });
+
+        document.getElementById('filter-clear-all').addEventListener('click', () => {
+            owners.forEach(o => o.checked = false);
+            renderList(searchInput.value);
+            renderChips();
+            renderTrigger();
+            renderActiveFilterBar();
+            document.querySelectorAll('#stage-list .stage-checkbox').forEach(cb => cb.classList.remove('checked'));
+            document.querySelectorAll('.fg-check-row input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.fg-radio-row').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('#msgwin-btns .fg-push, #contact-btns .fg-push').forEach(b => b.classList.remove('active'));
+            document.getElementById('custom-date-range').style.display = 'none';
         });
 
         renderSelectAll();
         renderList('');
         renderChips();
         renderTrigger();
+        /* ── Generic filter dropdowns (date, stages, source, courses, campaigns) ── */
+        ['dd-date', 'dd-source', 'dd-courses', 'dd-campaigns'].forEach(id => {
+            const dd = document.getElementById(id);
+            const trig = dd.querySelector('.owner-dropdown-trigger');
+            const pan = dd.querySelector('.owner-dropdown-panel');
+            pan.addEventListener('click', e => e.stopPropagation());
+            trig.addEventListener('click', e => {
+                e.stopPropagation();
+                const willOpen = !dd.classList.contains('open');
+                document.querySelectorAll('.owner-dropdown.open').forEach(d => d.classList.remove('open'));
+                dd.classList.toggle('open', willOpen);
+                if (willOpen) {
+                    const rect = trig.getBoundingClientRect();
+                    pan.style.top = (rect.bottom + 6) + 'px';
+                    pan.style.left = rect.left + 'px';
+                }
+            });
+            pan.addEventListener('change', () => updateDdLabel(id));
+            pan.querySelectorAll('.fg-radio-row').forEach(r => r.addEventListener('click', () => updateDdLabel(id)));
+        });
+        // store placeholders
+        document.getElementById('dd-date-text').dataset.placeholder = 'Select range';
+        document.getElementById('dd-source-text').dataset.placeholder = 'Select source';
+        document.getElementById('dd-courses-text').dataset.placeholder = 'Select course';
+        document.getElementById('dd-campaigns-text').dataset.placeholder = 'Select campaign';
+
+        /* ── Push-button toggle groups (msgwin, contact) ── */
+        ['msgwin-btns', 'contact-btns'].forEach(id => {
+            const group = document.getElementById(id);
+            group.querySelectorAll('.fg-push').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const wasActive = btn.classList.contains('active');
+                    group.querySelectorAll('.fg-push').forEach(b => b.classList.remove('active'));
+                    if (!wasActive) btn.classList.add('active');
+                });
+            });
+        });
+
+        /* ── Radio-row single-select (date range) ── */
+        const customDateRange = document.getElementById('custom-date-range');
+        document.getElementById('date-range-btns').querySelectorAll('.fg-radio-row').forEach(row => {
+            row.addEventListener('click', () => {
+                const wasActive = row.classList.contains('active');
+                document.querySelectorAll('#date-range-btns .fg-radio-row').forEach(r => r.classList.remove('active'));
+                if (!wasActive) row.classList.add('active');
+                customDateRange.style.display = (!wasActive && row.dataset.val === 'custom') ? 'flex' : 'none';
+                updateDdLabel('dd-date');
+            });
+        });
+
+function updateDdLabel(id) {
+            const dd = document.getElementById(id);
+            const textEl = dd.querySelector('.owner-trigger-text');
+            const checked = [...dd.querySelectorAll('input[type=checkbox]:checked')].map(c => c.value);
+            const checkedStages = [...dd.querySelectorAll('.stage-checkbox.checked')];
+            const active = dd.querySelector('.fg-radio-row.active');
+            if (id === 'dd-stages') {
+                const n = checkedStages.length;
+                textEl.textContent = n === 0 ? 'All stages' : n + ' selected';
+            } else if (checked.length) textEl.textContent = checked.length + ' selected';
+            else if (active) textEl.textContent = active.textContent.trim();
+            else textEl.textContent = textEl.dataset.placeholder || 'Select';
+        }
+
         renderActiveFilterBar();
 
         function renderActiveFilterBar() {
@@ -2251,30 +2775,70 @@
         ];
 
         const leads = [
-            { init: 'RB', name: 'Dr. Ramesh Babu', spec: 'AI & ML with Python', hosp: 'Linked In', status: 'Contacted' },
-            { init: 'VS', name: 'Dr. Venkatesh S', spec: 'Java Full stack ', hosp: 'Linked In', status: 'Contacted' },
-            { init: 'MP', name: 'Dr. Meera Patil', spec: 'Gynaecologist', hosp: 'Instagram', status: 'New lead' },
-            { init: 'AS', name: 'Dr. Arjun Singh', spec: 'Neurosurgeon', hosp: 'Linked In', status: 'Need identified' },
-            { init: 'NP', name: 'Dr. Nagesh Prasad', spec: 'Urologist', hosp: 'Linked In', status: 'Proposal sent' },
-            { init: 'SM', name: 'Dr. Shalini Menon', spec: 'ENT Specialist', hosp: 'Linked In', status: 'Follow up' },
-            { init: 'KA', name: 'Dr. Karan Arora', spec: 'Pulmonologist', hosp: 'Linked In', status: 'Negotiation' },
-            { init: 'PB', name: 'Dr. Prakash B', spec: 'General Surgeon', hosp: 'Linked In', status: 'Converted' },
-            { init: 'RJ', name: 'Dr. Rajiv Joshi', spec: 'Oncologist', hosp: 'Linked In', status: 'Contacted' },
-            { init: 'AK', name: 'Dr. Anitha Kumari', spec: 'Pediatrician', hosp: 'Linked In', status: 'New lead' },
-            { init: 'VR', name: 'Dr. Vivek Reddy', spec: 'Interventional Cardiologist', hosp: 'Linked In', status: 'Qualified' },
-            { init: 'SG', name: 'Dr. Sunita Gupta', spec: 'Radiologist', hosp: 'Linked In', status: 'Follow up' },
+        { init: 'RB', name: 'Dr. Ramesh Babu',      spec: 'AI & ML with Python',              hosp: 'LinkedIn',   status: 'Contacted' },
+        { init: 'VS', name: 'Dr. Venkatesh S',       spec: 'Java Full Stack Development',       hosp: 'LinkedIn',   status: 'Contacted' },
+        { init: 'MP', name: 'Dr. Meera Patil',       spec: 'Python Full Stack Development',     hosp: 'Instagram',  status: 'New lead' },
+        { init: 'AS', name: 'Dr. Arjun Singh',       spec: 'MERN Stack Development',            hosp: 'LinkedIn',   status: 'Need identified' },
+        { init: 'NP', name: 'Dr. Nagesh Prasad',     spec: 'Data Science with Python',          hosp: 'LinkedIn',   status: 'Proposal sent' },
+        { init: 'SM', name: 'Dr. Shalini Menon',     spec: 'Cloud Computing with AWS',          hosp: 'LinkedIn',   status: 'Follow up' },
+        { init: 'KA', name: 'Dr. Karan Arora',       spec: 'Cyber Security & Ethical Hacking',  hosp: 'LinkedIn',   status: 'Negotiation' },
+        { init: 'PB', name: 'Dr. Prakash B',         spec: 'DevOps & Kubernetes',               hosp: 'LinkedIn',   status: 'Converted' },
+        { init: 'RJ', name: 'Dr. Rajiv Joshi',       spec: 'React.js Development',              hosp: 'LinkedIn',   status: 'Contacted' },
+        { init: 'AK', name: 'Dr. Anitha Kumari',     spec: 'Flutter App Development',           hosp: 'LinkedIn',   status: 'New lead' },
+        { init: 'VR', name: 'Dr. Vivek Reddy',       spec: 'UI/UX Design with Figma',           hosp: 'LinkedIn',   status: 'Qualified' },
+        { init: 'SG', name: 'Dr. Sunita Gupta',      spec: 'Power BI & Data Analytics',         hosp: 'LinkedIn',   status: 'Follow up' },
+        { init: 'DK', name: 'Dr. Deepak Kulkarni',   spec: 'Angular Full Stack',                hosp: 'Facebook',   status: 'New lead' },
+        { init: 'PR', name: 'Dr. Priya Rajan',       spec: 'Node.js & Express',                 hosp: 'Instagram',  status: 'Contacted' },
+        { init: 'MN', name: 'Dr. Mohan Nair',        spec: 'Django & REST APIs',                hosp: 'LinkedIn',   status: 'Qualified' },
+        { init: 'TS', name: 'Dr. Tarun Sharma',      spec: 'Machine Learning with R',           hosp: 'LinkedIn',   status: 'Proposal sent' },
+        { init: 'LR', name: 'Dr. Lakshmi Rao',       spec: 'Blockchain Development',            hosp: 'LinkedIn',   status: 'Follow up' },
+        { init: 'SC', name: 'Dr. Suresh Chandra',    spec: 'iOS App Development (Swift)',       hosp: 'Referral',   status: 'Negotiation' },
+        { init: 'NM', name: 'Dr. Nandini Murthy',    spec: 'Android Development (Kotlin)',      hosp: 'LinkedIn',   status: 'New lead' },
+        { init: 'AV', name: 'Dr. Anil Verma',        spec: 'Salesforce CRM Development',        hosp: 'LinkedIn',   status: 'Contacted' },
+        { init: 'KP', name: 'Dr. Kavitha Pillai',    spec: 'SAP ABAP & Fiori',                  hosp: 'Referral',   status: 'Qualified' },
+        { init: 'RS', name: 'Dr. Rohit Saxena',      spec: 'Tableau & Power BI',                hosp: 'LinkedIn',   status: 'Proposal sent' },
+        { init: 'DI', name: 'Dr. Divya Iyer',        spec: 'Selenium Test Automation',          hosp: 'Instagram',  status: 'Follow up' },
+        { init: 'FM', name: 'Dr. Farhan Malik',      spec: 'Ethical Hacking & Pen Testing',     hosp: 'LinkedIn',   status: 'Negotiation' },
+        { init: 'SB', name: 'Dr. Sneha Bose',        spec: 'AWS Solutions Architect',           hosp: 'LinkedIn',   status: 'Converted' },
+        { init: 'AB', name: 'Dr. Ashwin Babu',       spec: 'Azure Cloud Engineering',           hosp: 'LinkedIn',   status: 'New lead' },
+        { init: 'MK', name: 'Dr. Meena Kapoor',      spec: 'GCP Data Engineering',              hosp: 'Facebook',   status: 'Contacted' },
+        { init: 'SK', name: 'Dr. Sameer Khan',       spec: 'Kubernetes & Docker',               hosp: 'LinkedIn',   status: 'Qualified' },
+        { init: 'GR', name: 'Dr. Girish Rao',        spec: 'Terraform & Infrastructure',        hosp: 'LinkedIn',   status: 'Proposal sent' },
+        { init: 'PN', name: 'Dr. Pooja Nair',        spec: 'Vue.js Development',                hosp: 'Instagram',  status: 'Follow up' },
+        { init: 'VK', name: 'Dr. Vijay Kumar',       spec: 'Next.js & SSR',                     hosp: 'LinkedIn',   status: 'Negotiation' },
+        { init: 'RI', name: 'Dr. Rekha Iyer',        spec: 'TypeScript & GraphQL',              hosp: 'Referral',   status: 'Converted' },
+        { init: 'HM', name: 'Dr. Harish Menon',      spec: 'Spring Boot Microservices',         hosp: 'LinkedIn',   status: 'New lead' },
+        { init: 'CP', name: 'Dr. Chitra Pillai',     spec: 'Rust Programming',                  hosp: 'LinkedIn',   status: 'Contacted' },
+        { init: 'BN', name: 'Dr. Balaji Naidu',      spec: 'Go Lang Development',               hosp: 'LinkedIn',   status: 'Qualified' },
+        { init: 'JD', name: 'Dr. Jyoti Desai',       spec: 'Scala & Apache Spark',              hosp: 'Facebook',   status: 'Proposal sent' },
+        { init: 'KN', name: 'Dr. Kiran Nambiar',     spec: 'NLP & Text Analytics',              hosp: 'LinkedIn',   status: 'Follow up' },
+        { init: 'OM', name: 'Dr. Om Prakash',        spec: 'Computer Vision & OpenCV',          hosp: 'LinkedIn',   status: 'Negotiation' },
+        { init: 'TR', name: 'Dr. Tara Reddy',        spec: 'Generative AI & LLMs',              hosp: 'Instagram',  status: 'Converted' },
+        { init: 'NC', name: 'Dr. Nikhil Chawla',     spec: 'MLOps & Model Deployment',          hosp: 'LinkedIn',   status: 'New lead' },
+        { init: 'SV', name: 'Dr. Shilpa Verma',      spec: 'Prompt Engineering',                hosp: 'LinkedIn',   status: 'Contacted' },
+        { init: 'AP', name: 'Dr. Arun Pillai',       spec: 'Embedded Systems & IoT',            hosp: 'Referral',   status: 'Qualified' },
+        { init: 'MB', name: 'Dr. Madhuri Bhat',      spec: 'Robotics & ROS',                    hosp: 'LinkedIn',   status: 'Proposal sent' },
+        { init: 'RN', name: 'Dr. Rajan Nair',        spec: 'AR/VR Development',                 hosp: 'LinkedIn',   status: 'Follow up' },
+        { init: 'SS', name: 'Dr. Sanjay Sinha',      spec: 'Game Development (Unity)',          hosp: 'Facebook',   status: 'Negotiation' },
+        { init: 'PK', name: 'Dr. Padma Krishnan',    spec: 'Unreal Engine Development',         hosp: 'LinkedIn',   status: 'Converted' },
+        { init: 'VB', name: 'Dr. Vinod Balan',       spec: 'Solidity & Smart Contracts',        hosp: 'LinkedIn',   status: 'New lead' },
+        { init: 'AN', name: 'Dr. Asha Namboodiri',   spec: 'Web3 & DeFi Development',           hosp: 'Instagram',  status: 'Contacted' },
+        { init: 'KM', name: 'Dr. Kartik Mehta',      spec: 'Quantum Computing Basics',          hosp: 'LinkedIn',   status: 'Qualified' },
+        { init: 'LN', name: 'Dr. Leela Nair',        spec: 'Digital Marketing & SEO',           hosp: 'Referral',   status: 'Follow up' },
         ];
 
         const grid = document.getElementById('leads-grid');
-        leads.forEach((d, i) => {
+        const BATCH = 12;
+        let rendered = 0;
+        let loading = false;
+
+        function makeCard(d, i) {
             const av = AVATAR_COLORS[i % AVATAR_COLORS.length];
             const st = STATUS_STYLE[d.status] || { bg: '#f3f4f6', color: '#374151' };
-
             const card = document.createElement('div');
             card.className = 'lead-card';
             card.setAttribute('role', 'article');
             card.setAttribute('aria-label', d.name);
-
             card.innerHTML = `
     <div class="card-top">
       <div class="card-avatar" style="background:${av.bg};color:${av.color}">${d.init}</div>
@@ -2282,45 +2846,156 @@
         <div class="card-name-row">
           <div class="card-name">${d.name}</div>
           <span class="status-pill" style="background:${st.bg};color:${st.color}">${d.status}</span>
-          <div class="card-info-text new">
-          <div class="card-info-label">${d.spec}</div>
+          <div class="card-info-text new"><div class="card-info-label">${d.spec}</div></div>
         </div>
-        </div>
-
       </div>
     </div>
-
     <hr class="card-divider">
-
     <div class="card-info-rows">
-      
-      <div class="card-info-row">
-        <div class="card-info-text new">
-          <div class="card-info-label">Source :&nbsp;</div>
-          <div class="card-info-value">${d.hosp}</div>
-        </div>
-      </div>
+      <div class="card-info-row"><div class="card-info-text new"><div class="card-info-label">Source :&nbsp;</div><div class="card-info-value newone">${d.hosp}</div></div></div>
+      <div class="card-info-row"><div class="card-info-text new"><div class="card-info-label">Lead Type :&nbsp;</div><div class="card-info-value newone">Course</div></div></div>
+      <div class="card-info-row"><div class="card-info-text new"><div class="card-info-label">Lead Owner :&nbsp;</div><div class="card-info-value newone">Raveena</div></div></div>
     </div>
-
     <hr class="card-divider">
-
     <div class="card-activity">
       <svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1.5 3.5-2 1.5a9 9 0 004.5 4.5L11.5 9.5 15 11v3a1 1 0 01-1 1C7 15 1 9 1 3a1 1 0 011-1z"></path></svg>
       Last activity: Call · Jun 30
     </div>
     <div class="card-actions">
-      <div class='action-btn-group'>
+      <div class="action-btn-group">
         <button class="action-btn" aria-label="Call"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h3l1.5 3.5-2 1.5a9 9 0 004.5 4.5L11.5 9.5 15 11v3a1 1 0 01-1 1C7 15 1 9 1 3a1 1 0 011-1z"></path></svg></button>
-      <button class="action-btn" aria-label="Email"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"></rect><path d="M1 6l7 4 7-4"></path></svg></button>
-      <button class="action-btn" aria-label="Schedule"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="2" width="14" height="14" rx="1.5"></rect><path d="M1 7h14M5 1v3M11 1v3"></path></svg></button>  
+        <button class="action-btn" aria-label="Email"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"></rect><path d="M1 6l7 4 7-4"></path></svg></button>
+        <button class="action-btn" aria-label="Schedule"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="2" width="14" height="14" rx="1.5"></rect><path d="M1 7h14M5 1v3M11 1v3"></path></svg></button>
       </div>
-      <div>
-        <button class="action-btn action-more" aria-label="More"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="4" cy="8" r="1" fill="currentColor"></circle><circle cx="8" cy="8" r="1" fill="currentColor"></circle><circle cx="12" cy="8" r="1" fill="currentColor"></circle></svg></button>
-      </div>
-    </div>
-  `;
+      <button class="action-btn" aria-label="More"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="4" cy="8" r="1" fill="currentColor"></circle><circle cx="8" cy="8" r="1" fill="currentColor"></circle><circle cx="12" cy="8" r="1" fill="currentColor"></circle></svg></button>
+    </div>`;
             card.addEventListener('click', () => openDetail(d, av, st));
-            grid.appendChild(card);
+            return card;
+        }
+
+        function renderBatch() {
+            if (loading || rendered >= leads.length) return;
+            loading = true;
+            const loader = document.getElementById('scroll-loader');
+            loader.textContent = 'Loading…';
+            setTimeout(() => {
+                const end = Math.min(rendered + BATCH, leads.length);
+                for (let i = rendered; i < end; i++) grid.appendChild(makeCard(leads[i], i));
+                rendered = end;
+                loader.textContent = rendered >= leads.length ? 'All ' + leads.length + ' leads loaded' : '';
+                loading = false;
+            }, 300);
+        }
+
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) renderBatch();
+        }, { threshold: 0.1 });
+        observer.observe(document.getElementById('scroll-sentinel'));
+        renderBatch();
+
+        /* ── View toggle ── */
+        let currentView = 'card';
+
+        function renderTableView() {
+            const tbody = document.getElementById('leads-table-body');
+            if (tbody.children.length) return;
+            leads.forEach((d, i) => {
+                const av = AVATAR_COLORS[i % AVATAR_COLORS.length];
+                const st = STATUS_STYLE[d.status] || { bg: '#f3f4f6', color: '#374151' };
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><div class="tbl-name-cell"><div class="tbl-avatar" style="background:${av.bg};color:${av.color}">${d.init}</div>${d.name}</div></td>
+                    <td>${d.spec}</td>
+                    <td>${d.hosp}</td>
+                    <td>Raveena</td>
+                    <td><span class="status-pill" style="background:${st.bg};color:${st.color};position:static;padding:3px 9px">${d.status}</span></td>
+                    <td style="color:var(--text-3)">Call · Jun 30</td>
+                    <td><button class="action-btn" aria-label="More"><svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round"><circle cx="4" cy="8" r="1" fill="currentColor"></circle><circle cx="8" cy="8" r="1" fill="currentColor"></circle><circle cx="12" cy="8" r="1" fill="currentColor"></circle></svg></button></td>`;
+                tr.addEventListener('click', () => openDetail(d, av, st));
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderFullView() {
+            const container = document.getElementById('leads-full');
+            if (container.children.length) return;
+            const KANBAN_STAGES = [
+                { label: 'New Lead',            key: 'New lead' },
+                { label: 'Contacted',           key: 'Contacted' },
+                { label: 'Qualified',           key: 'Qualified' },
+                { label: 'Need Identified',     key: 'Need identified' },
+                { label: 'Proposal Sent',       key: 'Proposal sent' },
+                { label: 'Follow Up',           key: 'Follow up' },
+                { label: 'Negotiation',         key: 'Negotiation' },
+                { label: 'Enrolled (Closed Won)', key: 'Converted' },
+                { label: 'Closed Lost',         key: 'Lost' },
+            ];
+            KANBAN_STAGES.forEach(stage => {
+                const stageLeads = leads.filter(l => l.status === stage.key);
+                const col = document.createElement('div');
+                col.className = 'kanban-col';
+                col.innerHTML = `
+                    <div class="kanban-col-header">
+                        <div class="kanban-count-badge">${stageLeads.length}</div>
+                        <div class="kanban-col-title">${stage.label}</div>
+                    </div>
+                    <div class="kanban-search">
+                        <svg viewBox="0 0 20 20"><circle cx="9" cy="9" r="6"/><path d="M15 15l-3-3"/></svg>
+                        <input type="text" placeholder="Search..." aria-label="Search ${stage.label}">
+                    </div>
+                    <div class="kanban-cards" id="kcol-${stage.key.replace(/\s/g,'-')}">
+                        ${stageLeads.length === 0 ? '<div class="kanban-empty">No leads</div>' : ''}
+                    </div>`;
+                // search within column
+                const input = col.querySelector('input');
+                const cardsEl = col.querySelector('.kanban-cards');
+                stageLeads.forEach((d, idx) => {
+                    const i = leads.indexOf(d);
+                    const av = AVATAR_COLORS[i % AVATAR_COLORS.length];
+                    const st = STATUS_STYLE[d.status] || { bg: '#f3f4f6', color: '#374151' };
+                    const row = document.createElement('div');
+                    row.className = 'kanban-lead-row';
+                    row.dataset.name = d.name.toLowerCase();
+                    row.innerHTML = `
+                        <div class="kanban-row-top">
+                            <div class="kanban-cb"></div>
+                            <div class="card-avatar" style="background:${av.bg};color:${av.color};width:28px;height:28px;font-size:10px;flex-shrink:0">${d.init}</div>
+                            <div class="kanban-row-name">${d.name}</div>
+                            <span class="kanban-row-pill" style="background:${st.bg};color:${st.color}">${d.status}</span>
+                        </div>
+                        <div class="kanban-row-bottom">
+                            <span class="kanban-tick"><svg viewBox="0 0 16 16"><polyline points="2,8 6,12 14,4"/></svg></span>
+                            <div class="kanban-row-msg">${d.spec}</div>
+                            <div class="kanban-row-date">Jun 30, 2024</div>
+                        </div>`;
+                    row.addEventListener('click', () => openDetail(d, av, st));
+                    cardsEl.appendChild(row);
+                });
+                input.addEventListener('input', () => {
+                    const q = input.value.toLowerCase();
+                    cardsEl.querySelectorAll('.kanban-lead-row').forEach(r => {
+                        r.style.display = r.dataset.name.includes(q) ? '' : 'none';
+                    });
+                });
+                container.appendChild(col);
+            });
+        }
+
+        document.getElementById('view-toggle').addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-view]');
+            if (!btn) return;
+            currentView = btn.dataset.view;
+            document.querySelectorAll('#view-toggle .view-btn').forEach(b => {
+                b.classList.toggle('active', b === btn);
+                b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+            });
+            document.getElementById('leads-grid').style.display = currentView === 'card' ? '' : 'none';
+            document.getElementById('leads-table').style.display = currentView === 'table' ? '' : 'none';
+            document.getElementById('leads-full').style.display = currentView === 'full' ? '' : 'none';
+            document.getElementById('scroll-sentinel').style.display = currentView === 'card' ? '' : 'none';
+            document.querySelector('.body-scroll').classList.toggle('kanban-mode', currentView === 'full');
+            if (currentView === 'table') renderTableView();
+            if (currentView === 'full') renderFullView();
         });
 
         /* ── Lead Detail ── */
@@ -2370,6 +3045,10 @@
 
             document.getElementById('lead-detail').classList.add('open');
         }
+
+        document.getElementById('sidebar-toggle').addEventListener('click', () => {
+            document.querySelector('.app').classList.toggle('sidebar-collapsed');
+        });
 
         document.getElementById('ld-back').addEventListener('click', () => {
             document.getElementById('lead-detail').classList.remove('open');
