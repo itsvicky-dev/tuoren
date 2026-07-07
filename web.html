@@ -551,6 +551,34 @@
             stroke-linecap: round;
             stroke-linejoin: round;
         }
+        .action-btn {
+            position: relative;
+        }
+        .action-btn::after {
+            content: attr(aria-label);
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2d4a;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 5px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s;
+            z-index: 10;
+        }
+        .action-btn:hover::after {
+            opacity: 1;
+        }
+        .action-btn:hover {
+            background: #f3f4f6;
+            color: var(--text);
+        }
 
         /* ── Content area ── */
         .content {
@@ -811,7 +839,7 @@
         .stage-count {
             font-size: 11px;
             color: var(--text-4);
-            font-family: var(--mono);
+            font-family: var(--font);
         }
 
         /* ── Owner multi-select dropdown ── */
@@ -1123,13 +1151,14 @@
             overflow-x: auto;
             overflow-y: hidden;
             padding: 14px 20px;
+            background: white;
         }
         .body-scroll::-webkit-scrollbar { width: 6px; }
         .body-scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
 
         /* ── Active filter bar ── */
         .active-filter-bar {
-            display: flex;
+            display: none;
             align-items: center;
             gap: 10px;
             margin-bottom: 14px;
@@ -1177,7 +1206,7 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
         }
 
         .page-title-row {
@@ -1200,7 +1229,7 @@
             font-weight: 700;
             padding: 3px 11px;
             border-radius: var(--r-pill);
-            font-family: var(--mono);
+            font-family: var(--font);
         }
 
         .page-sub {
@@ -1356,8 +1385,11 @@
         }
 
         /* ── Table view ── */
-        .leads-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
-        .leads-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); background: #f9fafb; white-space: nowrap; }
+        .table-wrap { overflow-y: auto; border: 1px solid var(--border); border-radius: var(--r-lg); margin-bottom: 20px; max-height: calc(100vh - 140px); }
+        .table-wrap::-webkit-scrollbar { width: 6px; }
+        .table-wrap::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+        .leads-table { width: 100%; border-collapse: collapse; background: var(--surface); }
+        .leads-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); background: #f9fafb; white-space: nowrap; position: sticky; top: 0; z-index: 2; }
         .leads-table td { padding: 11px 14px; font-size: 12.5px; color: var(--text); border-bottom: 1px solid var(--border); vertical-align: middle; }
         .leads-table tr:last-child td { border-bottom: none; }
         .leads-table tr:hover td { background: #f9fafb; cursor: pointer; }
@@ -1368,14 +1400,14 @@
         .kanban-board { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 16px; height: 100%; align-items: flex-start; }
         .kanban-board::-webkit-scrollbar { height: 6px; }
         .kanban-board::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-        .kanban-col { flex-shrink: 0; width: 300px; background: #f3f4f6; border-radius: 14px; display: flex; flex-direction: column; max-height: calc(100vh - 220px); }
+        .kanban-col { flex-shrink: 0; width: 300px; background: #f3f4f6; border-radius: 14px; display: flex; flex-direction: column; max-height: calc(100vh - 180px); }
         .kanban-col-header { display: flex; align-items: center; gap: 10px; padding: 14px 14px 10px; flex-shrink: 0; }
         .kanban-count-badge { width: 28px; height: 28px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--text-2); flex-shrink: 0; }
         .kanban-col-title { font-size: 15px; font-weight: 700; color: var(--text); }
         .kanban-search { position: relative; padding: 0 10px 10px; flex-shrink: 0; }
         .kanban-search input { width: 100%; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px 7px 28px; font-size: 12px; font-family: var(--font); color: var(--text); outline: none; }
         .kanban-search input:focus { border-color: var(--brand); }
-        .kanban-search svg { position: absolute; left: 19px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; stroke: var(--text-4); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .kanban-search svg { position: absolute; left: 19px; top: 0%;bottom:0%;margin: auto 0; transform: translateY(-40%); width: 13px; height: 13px; stroke: var(--text-4); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
         .kanban-cards { flex: 1; overflow-y: auto; padding: 0 10px 10px; display: flex; flex-direction: column; gap: 8px; }
         .kanban-cards::-webkit-scrollbar { width: 4px; }
         .kanban-cards::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
@@ -1420,6 +1452,7 @@
             cursor: pointer;
             transition: box-shadow 0.15s, border-color 0.15s;
             position: relative;
+            overflow: hidden;
         }
 
         .lead-card:hover {
@@ -1430,7 +1463,7 @@
         .card-top {
             display: flex;
             align-items: center;
-            gap: 13px;
+            gap: 5px;
 
         }
 
@@ -1459,6 +1492,13 @@
             gap:4px;
             flex-direction: column;
         }
+        .card-name-col {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap:4px;
+            width: 100%;
+        }
 
         .card-name {
             font-size: 13px;
@@ -1466,20 +1506,22 @@
             color: var(--text);
             letter-spacing: -0.2px;
             white-space: nowrap;
-            overflow: hidden;
             text-overflow: ellipsis;
+            position: relative;
+            cursor: default;
         }
+
 
         .status-pill {
             flex-shrink: 0;
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 600;
             padding: 4px 10px;
             border-radius: var(--r-pill);
             white-space: nowrap;
-            position:absolute;
+            /* position:absolute;
             top: 10px;
-            right: 10px;
+            right: 10px; */
         }
 
         .card-type-row {
@@ -1510,7 +1552,7 @@
         hr.card-divider {
             border: none;
             border-top: 1px solid var(--border);
-            margin: 10px 0;
+            margin: 6px 0;
         }
 
         .card-info-rows {
@@ -1565,6 +1607,24 @@
         .card-info-label {
             font-size: 11.5px;
             color: var(--text-3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+        #js-tooltip {
+            position: fixed;
+            background: #1e2d4a;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 99999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            display: none;
         }
 
         .card-info-value {
@@ -2098,7 +2158,7 @@
         <nav class="sidebar">
             <div class="sidebar-logo">
                 <img class="logo-expanded" src="https://app.wele.in/assets/logo-CmKaEfKn.svg" alt="Wele Medical" style="height:25px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
-                <img class="logo-collapsed" src="cropped-welelogo.svg" alt="Wele" style="height:24px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
+                <img class="logo-collapsed" src="welefavi.svg" alt="Wele" style="height:24px;width:auto;object-fit:contain;">
             </div>
 
             <div class="nav" id="nav"></div>
@@ -2130,29 +2190,11 @@
                 </div>
 
                 <div class="topbar-right">
-                    <button class="icon-btn accent" aria-label="Add new">
-                        <svg viewBox="0 0 20 20">
-                            <circle cx="10" cy="10" r="8" />
-                            <path d="M10 7v6M7 10h6" />
-                        </svg>
-                    </button>
                     <button class="icon-btn" aria-label="Notifications">
                         <svg viewBox="0 0 20 20">
                             <path d="M10 2a6 6 0 016 6c0 3.5 1 5 1 5H3s1-1.5 1-5a6 6 0 016-6zM8.5 17a1.5 1.5 0 003 0" />
                         </svg>
                         <span class="notif-badge">12</span>
-                    </button>
-                    <button class="icon-btn" aria-label="Mail">
-                        <svg viewBox="0 0 20 20">
-                            <rect x="2" y="4" width="16" height="13" rx="2" />
-                            <path d="M2 7l8 5 8-5" />
-                        </svg>
-                    </button>
-                    <button class="icon-btn" aria-label="Calendar">
-                        <svg viewBox="0 0 20 20">
-                            <rect x="2" y="3" width="16" height="16" rx="2" />
-                            <path d="M2 8h16M7 2v3M13 2v3" />
-                        </svg>
                     </button>
                     <div class="topbar-avatar">AK</div>
                     <div class="topbar-user">
@@ -2535,7 +2577,7 @@
                     <div class="page-header">
                         <div>
                             <div class="page-title-row">
-                                <h1 class="page-h1">Leads (Doctors)</h1>
+                                <h1 class="page-h1">Leads</h1>
                                 <span class="count-pill">1,985</span>
                             </div>
                             <p class="page-sub">Manage and track all doctor leads and opportunities</p>
@@ -2598,7 +2640,8 @@
                     <div class="leads-grid" id="leads-grid"></div>
 
                     <!-- Table view -->
-                    <table class="leads-table" id="leads-table" style="display:none">
+                    <div id="table-wrap" class="table-wrap" style="display:none">
+                    <table class="leads-table" id="leads-table">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -2612,6 +2655,7 @@
                         </thead>
                         <tbody id="leads-table-body"></tbody>
                     </table>
+                    </div>
 
                     <!-- Full details / Kanban view -->
                     <div class="kanban-board" id="leads-full" style="display:none"></div>
@@ -2628,7 +2672,22 @@
         </div>
     </div>
 
+    <div id="js-tooltip"></div>
     <script>
+        const _tt = document.getElementById('js-tooltip');
+        document.addEventListener('mouseover', e => {
+            const el = e.target.closest('[data-tooltip]');
+            if (el) { _tt.textContent = el.dataset.tooltip; _tt.style.display = 'block'; }
+        });
+        document.addEventListener('mouseout', e => {
+            if (e.target.closest('[data-tooltip]')) _tt.style.display = 'none';
+        });
+        document.addEventListener('mousemove', e => {
+            if (_tt.style.display === 'block') {
+                _tt.style.left = (e.clientX + 12) + 'px';
+                _tt.style.top = (e.clientY + 16) + 'px';
+            }
+        });
         /* ── Inline SVGs ── */
         const SVG = {
             dashboard: '<svg viewBox="0 0 16 16" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>',
@@ -3251,9 +3310,11 @@ function updateDdLabel(id) {
       <div class="card-avatar" style="background:${av.bg};color:${av.color}">${d.init}</div>
       <div class="card-identity">
         <div class="card-name-row">
-          <div class="card-name">${d.name}</div>
-          <span class="status-pill" style="background:${st.bg};color:${st.color}">${d.status}</span>
-          <div class="card-info-text new"><div class="card-info-label">${d.spec}</div></div>
+          <div class="card-name-col">
+            <div class="card-name"${d.name.length > 10 ? ` data-tooltip="${d.name}"` : ''}>${d.name.length > 10 ? d.name.slice(0, 10) + '…' : d.name}</div>
+            <span class="status-pill" style="background:${st.bg};color:${st.color}">${d.status}</span>  
+          </div>
+          <div class="card-info-text new" style="min-width:0;overflow:hidden"><div class="card-info-label"${d.spec.length > 25 ? ` data-tooltip="${d.spec}"` : ''} style="position:relative">${d.spec.length > 25 ? d.spec.slice(0, 25) + '…' : d.spec}</div></div>
         </div>
       </div>
     </div>
@@ -3397,7 +3458,7 @@ function updateDdLabel(id) {
                 b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
             });
             document.getElementById('leads-grid').style.display = currentView === 'card' ? '' : 'none';
-            document.getElementById('leads-table').style.display = currentView === 'table' ? '' : 'none';
+            document.getElementById('table-wrap').style.display = currentView === 'table' ? '' : 'none';
             document.getElementById('leads-full').style.display = currentView === 'full' ? '' : 'none';
             document.getElementById('scroll-sentinel').style.display = currentView === 'card' ? '' : 'none';
             document.querySelector('.body-scroll').classList.toggle('kanban-mode', currentView === 'full');
